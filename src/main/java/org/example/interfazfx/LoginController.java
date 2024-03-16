@@ -81,6 +81,8 @@ public class LoginController {
         loginButton.setOnMouseEntered(event -> loginButton.setCursor(Cursor.HAND));
         registerLabel1.setOnMouseEntered(event -> registerLabel1.setCursor(Cursor.HAND));
 
+        Platform.runLater(() -> usernameField.requestFocus());
+
         // Configuración del enlace para ir a la vista de registro
         registerLabel1.setOnMouseClicked(event -> {
             try {
