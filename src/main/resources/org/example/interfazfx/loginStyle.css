@@ -1,0 +1,46 @@
+.root {
+    -fx-font-smoothing-type: lcd;
+}
+
+#base {
+    -fx-background-radius: 15; /* ajusta este valor según lo redondeado que quieras que sea el borde */
+}
+
+#izqmitad{
+    -fx-background-color: rgba(32,32,37,255);
+    -fx-background-radius: 10 0 0 10;
+
+}
+
+#dermitad {
+    -fx-background-color: rgb(227, 233, 234);
+    -fx-background-radius: 0 10 10 0 ;
+}
+
+#BotonIniciar{
+    -fx-background-color: rgba(2,158,210,255);
+    -fx-border-radius: 100;
+}
+
+#close{
+    -fx-background-color: rgb(227, 233, 234);
+    -fx-background-radius: 0 9 0 0;
+}
+
+#close:hover {
+    -fx-background-color: #dc4c4c;
+}
+
+#minimize{
+    -fx-background-color: rgb(227, 233, 234);
+}
+
+#minimize:hover {
+    -fx-background-color: rgb(236, 240, 241);
+}
+
+#usernameField, #passwordField {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #000 transparent;
+    -fx-border-width: 0 0 1 0;
+}
