@@ -1,0 +1,7 @@
+.root {
+    -fx-font-smoothing-type: lcd;
+}
+
+#base {
+    -fx-background-radius: 15; /* ajusta este valor según lo redondeado que quieras que sea el borde */
+}

@@ -13,8 +13,11 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class RegisterController {
+
+    private DataBase dataBase = new DataBase();
 
     @FXML
     private Button exitButton;
@@ -26,7 +29,13 @@ public class RegisterController {
     private Label loginLabel1;
 
     @FXML
-    private Button loginButton;
+    private Button registerButton;
+
+    @FXML
+    private TextField passField;
+
+    @FXML
+    private TextField emailField;
 
     @FXML
     private TextField usernameField;
@@ -78,7 +87,7 @@ public class RegisterController {
         });
 
         // Configuración del botón de inicio de sesión
-        loginButton.setOnMouseEntered(event -> loginButton.setCursor(Cursor.HAND));
+        registerButton.setOnMouseEntered(event -> registerButton.setCursor(Cursor.HAND));
         loginLabel1.setOnMouseEntered(event -> loginLabel1.setCursor(Cursor.HAND));
 
         Platform.runLater(() -> usernameField.requestFocus());
@@ -93,5 +102,16 @@ public class RegisterController {
                 e.printStackTrace();
             }
         });
+
+        registerButton.setOnMouseClicked(event ->{
+
+            try {
+                dataBase.insertUser(usernameField, emailField, passField);
+            }catch (SQLException e){
+                e.printStackTrace();
+            };
+
+        });
+
     }
 }

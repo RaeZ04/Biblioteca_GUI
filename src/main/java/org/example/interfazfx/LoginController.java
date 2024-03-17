@@ -13,8 +13,11 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class LoginController {
+
+    private DataBase dataBase = new DataBase();
 
     @FXML
     private Button exitButton;
@@ -29,7 +32,10 @@ public class LoginController {
     private Button loginButton;
 
     @FXML
-    private TextField usernameField;
+    private TextField emailField;
+
+    @FXML
+    private TextField passField;
 
     @FXML
     protected void initialize() {
@@ -82,7 +88,7 @@ public class LoginController {
         loginButton.setOnMouseEntered(event -> loginButton.setCursor(Cursor.HAND));
         registerLabel1.setOnMouseEntered(event -> registerLabel1.setCursor(Cursor.HAND));
 
-        Platform.runLater(() -> usernameField.requestFocus());
+        Platform.runLater(() -> emailField.requestFocus());
 
         // Configuración del enlace para ir a la vista de registro
         registerLabel1.setOnMouseClicked(event -> {
@@ -94,5 +100,21 @@ public class LoginController {
                 e.printStackTrace();
             }
         });
+
+        loginButton.setOnAction(event -> {
+            try {
+                if (dataBase.userExists(emailField.getText(), passField.getText())) {
+                    AppInitializer appInitializer = new AppInitializer();
+                    Stage stage = (Stage) loginButton.getScene().getWindow();
+                    appInitializer.changeScene(stage, "libraryUser.fxml");
+                } else {
+                    Stage stage = (Stage) loginButton.getScene().getWindow();
+                    stage.close();
+                }
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 }

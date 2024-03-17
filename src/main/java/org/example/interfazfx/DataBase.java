@@ -1,10 +1,9 @@
 package org.example.interfazfx;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import javafx.scene.control.TextField;
+import org.w3c.dom.Text;
+
+import java.sql.*;
 
 public class DataBase {
 
@@ -18,23 +17,39 @@ public class DataBase {
 
         if (connection != null) {
             // Crea un objeto Statement
-            Statement statement = connection.createStatement();
-
-            // Ejecuta la consulta SQL
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM prueba order by 1");
-
-            // Procesa el ResultSet
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String nombre = resultSet.getString("nombre");
-            }
-
-            // Cierra el ResultSet y el Statement
-            resultSet.close();
-            statement.close();
-
             // Cierra la conexión
             connection.close();
         }
     }
+
+    public void insertUser(TextField usernameField, TextField emailField, TextField passField) throws SQLException {
+
+        Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
+
+        if (connection != null) {
+            String query = "INSERT INTO usuarios (nombre, email, pass) VALUES (?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, usernameField.getText());
+            preparedStatement.setString(2, emailField.getText());
+            preparedStatement.setString(3, passField.getText());
+            preparedStatement.executeUpdate();
+            connection.close();
+        }
+    }
+
+    public boolean userExists(String email, String password) throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
+        if (connection != null) {
+            String query = "SELECT * FROM usuarios WHERE email = ? AND pass = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean exists = resultSet.next();
+            connection.close();
+            return exists;
+        }
+        return false;
+    }
+
 }
