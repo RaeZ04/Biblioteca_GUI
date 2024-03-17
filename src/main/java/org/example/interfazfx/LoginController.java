@@ -56,25 +56,26 @@ public class LoginController {
         // Configuración del botón de minimizar
         Platform.runLater(() -> {
             Stage stage = (Stage) minimizeButton.getScene().getWindow();
+            if (stage != null) {
+                stage.iconifiedProperty().addListener((obs, wasMinimized, isNowMinimized) -> {
+                    if (!isNowMinimized) {
+                        Timeline timeline = new Timeline(
+                                new KeyFrame(Duration.seconds(0), new KeyValue(stage.opacityProperty(), 0.0)),
+                                new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 1.0))
+                        );
+                        timeline.play();
+                    }
+                });
 
-            stage.iconifiedProperty().addListener((obs, wasMinimized, isNowMinimized) -> {
-                if (!isNowMinimized) {
+                minimizeButton.setOnAction(event -> {
                     Timeline timeline = new Timeline(
-                            new KeyFrame(Duration.seconds(0), new KeyValue(stage.opacityProperty(), 0.0)),
-                            new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 1.0))
+                            new KeyFrame(Duration.seconds(0), new KeyValue(stage.opacityProperty(), 1.0)),
+                            new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 0.0))
                     );
+                    timeline.setOnFinished(e -> stage.setIconified(true));
                     timeline.play();
-                }
-            });
-
-            minimizeButton.setOnAction(event -> {
-                Timeline timeline = new Timeline(
-                        new KeyFrame(Duration.seconds(0), new KeyValue(stage.opacityProperty(), 1.0)),
-                        new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 0.0))
-                );
-                timeline.setOnFinished(e -> stage.setIconified(true));
-                timeline.play();
-            });
+                });
+            }
         });
 
         // Configuración del botón de inicio de sesión

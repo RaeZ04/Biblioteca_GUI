@@ -1,0 +1,36 @@
+#base {
+    -fx-background-radius: 15; /* ajusta este valor según lo redondeado que quieras que sea el borde */
+}
+
+#top{
+    -fx-background-color: rgba(32,32,37,255);
+    -fx-background-radius: 15 15 0 0;
+}
+
+#mid{
+    -fx-background-color: rgba(32,32,37,255);
+    -fx-border-radius: 10px;
+    -fx-background-radius: 15;
+}
+
+#midlow{
+    -fx-background-color: rgb(227, 233, 234);
+    -fx-background-radius: 15;
+}
+
+#close{
+    -fx-background-color: rgba(32,32,37,255);
+    -fx-background-radius: 0 9 0 0;
+}
+
+#close:hover {
+    -fx-background-color: #dc4c4c;
+}
+
+#minimize{
+    -fx-background-color: rgba(32,32,37,255);
+}
+
+#minimize:hover {
+    -fx-background-color: rgb(56, 56, 63);
+}
