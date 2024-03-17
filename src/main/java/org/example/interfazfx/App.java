@@ -8,6 +8,8 @@ import java.sql.SQLException;
 
 public class App extends Application {
 
+    public static String currentUsername;
+
     @Override
     public void start(Stage stage) {
         AppInitializer appInitializer = new AppInitializer();

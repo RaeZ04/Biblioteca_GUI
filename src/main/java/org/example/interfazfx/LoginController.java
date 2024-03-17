@@ -104,6 +104,8 @@ public class LoginController {
         loginButton.setOnAction(event -> {
             try {
                 if (dataBase.userExists(emailField.getText(), passField.getText())) {
+                    String username = dataBase.getUsername(emailField.getText());
+                    App.currentUsername = username;
                     AppInitializer appInitializer = new AppInitializer();
                     Stage stage = (Stage) loginButton.getScene().getWindow();
                     appInitializer.changeScene(stage, "libraryUser.fxml");

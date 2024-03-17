@@ -52,4 +52,21 @@ public class DataBase {
         return false;
     }
 
+    public String getUsername(String email) throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
+        if (connection != null) {
+            String query = "SELECT nombre FROM usuarios WHERE email = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String username = resultSet.getString("nombre");
+                connection.close();
+                return username;
+            }
+            connection.close();
+        }
+        return null;
+    }
+
 }

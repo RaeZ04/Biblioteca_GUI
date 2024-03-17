@@ -3,5 +3,44 @@
 }
 
 #base {
-    -fx-background-radius: 15; /* ajusta este valor según lo redondeado que quieras que sea el borde */
+    -fx-background-radius: 10; /* ajusta este valor según lo redondeado que quieras que sea el borde */
 }
+
+#nav{
+    -fx-background-color: rgba(32,32,37,255);
+    -fx-background-radius: 8 8 0 0;
+}
+
+#searchbar{
+
+    -fx-background-color: rgba(32,32,37,255);
+    -fx-border-color: transparent transparent #ffffff transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-width: 1.7px;
+    -fx-stroke: white;
+    -fx-text-fill: white;
+}
+
+#close{
+
+    -fx-background-radius: 0 9 0 0;
+    -fx-background-color: rgba(32,32,37,255);
+}
+
+#close:hover {
+    -fx-background-color: #dc4c4c;
+}
+
+#minimize{
+    -fx-background-color: rgba(32,32,37,255);
+}
+
+#minimize:hover {
+    -fx-background-color: rgb(56, 56, 63);
+}
+
+#anchorpanebase{
+    -fx-background-radius: 15;
+    -fx-background-color: rgba(56, 56, 63, 0.9);
+}
+
