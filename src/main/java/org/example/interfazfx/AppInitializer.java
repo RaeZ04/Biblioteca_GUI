@@ -34,7 +34,6 @@ public class AppInitializer {
 
     // Método para cambiar de escena
     public void changeScene(Stage stage, String fxml) throws IOException {
-        // Cargamos el archivo FXML de la vista especificada y creamos una nueva escena con el contenido del archivo FXML
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);

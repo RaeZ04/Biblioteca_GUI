@@ -15,7 +15,7 @@
          <children>
             <AnchorPane id="nav" layoutX="-2.0" layoutY="79.0" prefHeight="235.0" prefWidth="1575.0" stylesheets="@libraryUserStyle.css" AnchorPane.bottomAnchor="701.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label fx:id="usernameLabel" layoutX="280.0" layoutY="87.0" prefHeight="38.0" prefWidth="197.0" text="Nombre" textFill="WHITE">
+                  <Label fx:id="usernameLabel" layoutX="264.0" layoutY="87.0" prefHeight="47.0" prefWidth="355.0" text="Nombre" textFill="WHITE">
                      <font>
                         <Font size="32.0" />
                      </font>

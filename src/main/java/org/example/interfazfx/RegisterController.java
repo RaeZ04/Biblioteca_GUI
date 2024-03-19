@@ -11,6 +11,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import java.sql.SQLIntegrityConstraintViolationException;
+
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,6 +41,11 @@ public class RegisterController {
 
     @FXML
     private TextField usernameField;
+
+    @FXML
+    private Label errorReg;
+
+
 
     @FXML
     protected void initialize() {
@@ -107,7 +114,10 @@ public class RegisterController {
 
             try {
                 dataBase.insertUser(usernameField, emailField, passField);
-            }catch (SQLException e){
+            }catch (SQLIntegrityConstraintViolationException e) {
+                errorReg.setVisible(true);
+            }
+            catch (SQLException e){
                 e.printStackTrace();
             };
 

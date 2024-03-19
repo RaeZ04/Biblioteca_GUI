@@ -27,11 +27,11 @@ public class DataBase {
         Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
 
         if (connection != null) {
-            String query = "INSERT INTO usuarios (nombre, email, pass) VALUES (?, ?, ?)";
+            String query = "INSERT INTO usuarios (nombre, contraseña, correo) VALUES (?, ?, ?|| '@edu.uah.es')";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, usernameField.getText());
-            preparedStatement.setString(2, emailField.getText());
-            preparedStatement.setString(3, passField.getText());
+            preparedStatement.setString(2, passField.getText());
+            preparedStatement.setString(3, usernameField.getText());
             preparedStatement.executeUpdate();
             connection.close();
         }
@@ -40,7 +40,7 @@ public class DataBase {
     public boolean userExists(String email, String password) throws SQLException {
         Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
         if (connection != null) {
-            String query = "SELECT * FROM usuarios WHERE email = ? AND pass = ?";
+            String query = "SELECT * FROM usuarios WHERE correo = ? AND contraseña = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, password);
@@ -55,7 +55,7 @@ public class DataBase {
     public String getUsername(String email) throws SQLException {
         Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
         if (connection != null) {
-            String query = "SELECT nombre FROM usuarios WHERE email = ?";
+            String query = "SELECT nombre FROM usuarios WHERE correo = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();

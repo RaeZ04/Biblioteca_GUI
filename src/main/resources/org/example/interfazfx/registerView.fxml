@@ -19,51 +19,46 @@
          <children>
                 <AnchorPane id="izqmitad" prefHeight="936.0" prefWidth="789.0" stylesheets="@registerStyle.css">
                     <children>
-                        <Label layoutX="126.0" layoutY="311.0" prefHeight="54.0" prefWidth="292.0" text="Nombre Usuario">
+                        <Label layoutX="126.0" layoutY="371.0" prefHeight="54.0" prefWidth="292.0" text="Nombre Usuario">
                             <font>
                                 <Font size="33.0" />
                             </font>
                         </Label>
-                        <Label layoutX="125.0" layoutY="611.0" prefHeight="54.0" prefWidth="186.0" text="Contraseña">
+                        <Label layoutX="125.0" layoutY="551.0" prefHeight="54.0" prefWidth="186.0" text="Contraseña">
                             <font>
                                 <Font size="33.0" />
                             </font>
                         </Label>
-                        <PasswordField id="passwordField" fx:id="passField" layoutX="125.0" layoutY="671.0" prefHeight="41.0" prefWidth="528.0" stylesheets="@registerStyle.css">
+                        <PasswordField id="passwordField" fx:id="passField" layoutX="125.0" layoutY="611.0" prefHeight="41.0" prefWidth="528.0" stylesheets="@registerStyle.css">
                             <font>
                                 <Font size="16.0" />
                             </font>
                   </PasswordField>
-                        <TextField id="usernameField" fx:id="usernameField" layoutX="125.0" layoutY="379.0" prefHeight="41.0" prefWidth="528.0" stylesheets="@registerStyle.css">
+                        <TextField id="usernameField" fx:id="usernameField" layoutX="125.0" layoutY="439.0" prefHeight="41.0" prefWidth="528.0" stylesheets="@registerStyle.css">
                             <font>
                                 <Font size="16.0" />
                             </font>
                         </TextField>
-                        <Button id="BotonIniciar" fx:id="registerButton" layoutX="321.0" layoutY="788.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="188.0" stylesheets="@registerStyle.css" text="Registrarse">
+                        <Button id="BotonIniciar" fx:id="registerButton" layoutX="321.0" layoutY="728.0" mnemonicParsing="false" prefHeight="66.0" prefWidth="188.0" stylesheets="@registerStyle.css" text="Registrarse">
                             <font>
                                 <Font name="System Italic" size="23.0" />
                             </font>
                         </Button>
-                        <Label fx:id="loginLabel1" layoutX="541.0" layoutY="733.0" prefHeight="31.0" prefWidth="121.0" text="Inicia Sesión" textFill="#029ed2" wrapText="true">
+                        <Label fx:id="loginLabel1" layoutX="541.0" layoutY="670.0" prefHeight="31.0" prefWidth="121.0" text="Inicia Sesión" textFill="#029ed2" wrapText="true">
                             <font>
                                 <Font name="System Italic" size="21.0" />
                             </font>
                         </Label>
-                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="320.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="320.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@media/loginicon.png" />
                             </image>
                         </ImageView>
-                  <Label layoutX="126.0" layoutY="460.0" prefHeight="54.0" prefWidth="292.0" text="Email">
+                  <Label fx:id="errorReg" layoutX="126.0" layoutY="662.0" prefHeight="17.0" prefWidth="239.0" text="No puedes dejar campos en blanco" textFill="RED" visible="false">
                      <font>
-                        <Font size="33.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField id="usernameField" fx:id="emailField" layoutX="125.0" layoutY="523.0" prefHeight="41.0" prefWidth="528.0" stylesheets="@registerStyle.css">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </TextField>
                     </children>
             </AnchorPane>
          </children></VBox>
