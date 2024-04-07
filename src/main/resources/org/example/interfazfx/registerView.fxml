@@ -19,12 +19,12 @@
          <children>
                 <AnchorPane id="izqmitad" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="640.0" stylesheets="@registerStyle.css">
                     <children>
-                        <Label layoutX="100.0" layoutY="288.0" prefHeight="54.0" prefWidth="292.0" text="Nombre Usuario">
+                        <Label layoutX="100.0" layoutY="288.0" prefHeight="54.0" prefWidth="337.0" text="Nombre Usuario">
                             <font>
                                 <Font size="33.0" />
                             </font>
                         </Label>
-                        <Label layoutX="100.0" layoutY="413.0" prefHeight="54.0" prefWidth="186.0" text="Contraseña">
+                        <Label layoutX="100.0" layoutY="413.0" prefHeight="54.0" prefWidth="337.0" text="Contraseña">
                             <font>
                                 <Font size="33.0" />
                             </font>
