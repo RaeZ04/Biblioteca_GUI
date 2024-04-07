@@ -54,7 +54,7 @@
                                 <Image url="@media/loginicon.png" />
                             </image>
                         </ImageView>
-                  <Label fx:id="errorReg" layoutX="100.0" layoutY="517.0" prefHeight="20.0" prefWidth="293.0" text="No puedes dejar campos en blanco" textFill="RED" visible="false">
+                  <Label fx:id="errorReg" layoutX="100.0" layoutY="517.0" prefHeight="20.0" prefWidth="314.0" text="No puedes dejar campos en blanco" textFill="RED" visible="false">
                      <font>
                         <Font size="14.0" />
                      </font>

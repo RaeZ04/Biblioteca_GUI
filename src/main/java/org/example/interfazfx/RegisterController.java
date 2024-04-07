@@ -113,54 +113,59 @@ public class RegisterController {
 
         registerButton.setOnMouseClicked(event -> {
             try {
-            dataBase.insertUser(usernameField, emailField, passField);
+                if (usernameField.getText().isEmpty() ||  passField.getText().isEmpty()) {
 
-            Stage primaryStage = (Stage) registerButton.getScene().getWindow();
+                    errorReg.setText("Tienes que rellenar todos los campos");
+                    errorReg.setVisible(true);
+                } else {
+                    dataBase.insertUser(usernameField, emailField, passField);
         
-            Stage dialog = new Stage();
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("Registro exitoso");
-            dialog.setResizable(false); 
-            
-            // Cambiar el icono de la ventana
-            Image icon = new Image(getClass().getResourceAsStream("media/uah.png"));
-            dialog.getIcons().add(icon);
-            
-            Label label1 = new Label("Te has registrado correctamente.");
-            label1.setFont(new Font("Arial", 14)); // Aumentar el tamaño de la fuente
-            Label label2 = new Label("Email asociado: " + usernameField.getText() + "@edu.uah.es");
-            label2.setFont(new Font("Arial", 14)); // Aumentar el tamaño de la fuente
-            Button closeButton = new Button("Aceptar");
-            closeButton.setOnAction(e -> dialog.close());
+                    Stage primaryStage = (Stage) registerButton.getScene().getWindow();
+                
+                    Stage dialog = new Stage();
+                    dialog.initModality(Modality.APPLICATION_MODAL);
+                    dialog.setTitle("Registro exitoso");
+                    dialog.setResizable(false); 
+                    
+                    // Cambiar el icono de la ventana
+                    Image icon = new Image(getClass().getResourceAsStream("media/uah.png"));
+                    dialog.getIcons().add(icon);
+                    
+                    Label label1 = new Label("Te has registrado correctamente.");
+                    label1.setFont(new Font("Arial", 14)); // Aumentar el tamaño de la fuente
+                    Label label2 = new Label("Email asociado: " + usernameField.getText() + "@edu.uah.es");
+                    label2.setFont(new Font("Arial", 14)); // Aumentar el tamaño de la fuente
+                    Button closeButton = new Button("Aceptar");
+                    closeButton.setOnAction(e -> dialog.close());
+                
+                    Region spacer = new Region(); 
+                    spacer.setMinHeight(10); 
+                    
+                    VBox layout = new VBox(10);
+                    layout.getChildren().addAll(label1, label2, spacer, closeButton);
+                    layout.setAlignment(Pos.CENTER);
+                    
+                    Scene dialogScene = new Scene(layout, 300, 150);
+                    dialog.setScene(dialogScene);
+                
+                    // Posicionar la ventana emergente en el centro de la ventana actual
+                    dialog.setX(primaryStage.getX() + (primaryStage.getWidth() - dialogScene.getWidth()) / 2);
+                    dialog.setY(primaryStage.getY() + (primaryStage.getHeight() - dialogScene.getHeight()) / 2);
+                
+                    dialog.show();
         
-            Region spacer = new Region(); 
-            spacer.setMinHeight(10); 
-            
-            VBox layout = new VBox(10);
-            layout.getChildren().addAll(label1, label2, spacer, closeButton);
-            layout.setAlignment(Pos.CENTER);
-            
-            Scene dialogScene = new Scene(layout, 300, 150);
-            dialog.setScene(dialogScene);
-        
-            // Posicionar la ventana emergente en el centro de la ventana actual
-            dialog.setX(primaryStage.getX() + (primaryStage.getWidth() - dialogScene.getWidth()) / 2);
-            dialog.setY(primaryStage.getY() + (primaryStage.getHeight() - dialogScene.getHeight()) / 2);
-        
-            dialog.show();
-
-            AppInitializer appInitializer = new AppInitializer();
-            Stage stage = (Stage) loginLabel1.getScene().getWindow();
-            appInitializer.changeScene(stage, "loginView.fxml");
-
+                    AppInitializer appInitializer = new AppInitializer();
+                    Stage stage = (Stage) loginLabel1.getScene().getWindow();
+                    appInitializer.changeScene(stage, "loginView.fxml");
+                }
             } catch (SQLIntegrityConstraintViolationException e) {
-            errorReg.setVisible(true);
+                errorReg.setText("El usuario que has introducido ya existe");
+                errorReg.setVisible(true);
             } catch (SQLException e) {
-            e.printStackTrace();
+                e.printStackTrace();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         });
-
     }
 }

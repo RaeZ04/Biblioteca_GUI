@@ -15,8 +15,6 @@ public class DataBase {
         Connection connection = DriverManager.getConnection(dbURL, username, password);
 
         if (connection != null) {
-            // Crea un objeto Statement
-            // Cierra la conexión
             connection.close();
         }
     }
@@ -24,12 +22,10 @@ public class DataBase {
     @SuppressWarnings("exports")
     public void insertUser(TextField usernameField, TextField emailField, TextField passField) throws SQLException {
 
-        
-
         Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
 
         if (connection != null) {
-            String query = "INSERT INTO usuarios (nombre, contraseña, correo) VALUES (?, ?, ?|| '@edu.uah.es')";
+            String query = "INSERT INTO usuarios (nombre, contraseña, correo) VALUES (?, ?, ? || '@edu.uah.es')";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, usernameField.getText());
             preparedStatement.setString(2, passField.getText());
