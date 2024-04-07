@@ -11,7 +11,7 @@ public class App extends Application {
     public static String currentUsername;
 
     @Override
-    public void start(Stage stage) {
+    public void start(@SuppressWarnings("exports") Stage stage) {
         AppInitializer appInitializer = new AppInitializer();
 
         try {

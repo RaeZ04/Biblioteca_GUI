@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.io.IOException;
 
 public class AppInitializer {
@@ -15,7 +14,7 @@ public class AppInitializer {
     private double yOffset = 0;
 
     // Método para iniciar la aplicación
-    public void start(Stage stage) throws IOException {
+    public void start(@SuppressWarnings("exports") Stage stage) throws IOException {
         // Cargamos el archivo FXML de la vista de inicio de sesión y creamos una nueva escena con el contenido del archivo FXML
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("loginView.fxml"));
         Parent root = fxmlLoader.load();
@@ -33,7 +32,7 @@ public class AppInitializer {
     }
 
     // Método para cambiar de escena
-    public void changeScene(Stage stage, String fxml) throws IOException {
+    public void changeScene(@SuppressWarnings("exports") Stage stage, String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);

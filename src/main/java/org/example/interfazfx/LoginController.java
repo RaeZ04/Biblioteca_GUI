@@ -38,6 +38,9 @@ public class LoginController {
     private TextField passField;
 
     @FXML
+    private Label errorLogin;
+
+    @FXML
     protected void initialize() {
         // Configuración del botón de salida
         exitButton.setOnAction(event -> {
@@ -110,8 +113,7 @@ public class LoginController {
                     Stage stage = (Stage) loginButton.getScene().getWindow();
                     appInitializer.changeScene(stage, "libraryUser.fxml");
                 } else {
-                    Stage stage = (Stage) loginButton.getScene().getWindow();
-                    stage.close();
+                    errorLogin.setVisible(true);
                 }
             } catch (SQLException | IOException e) {
                 e.printStackTrace();

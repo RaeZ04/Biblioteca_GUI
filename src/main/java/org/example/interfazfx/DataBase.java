@@ -1,7 +1,6 @@
 package org.example.interfazfx;
 
 import javafx.scene.control.TextField;
-import org.w3c.dom.Text;
 
 import java.sql.*;
 
@@ -22,7 +21,10 @@ public class DataBase {
         }
     }
 
+    @SuppressWarnings("exports")
     public void insertUser(TextField usernameField, TextField emailField, TextField passField) throws SQLException {
+
+        
 
         Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
 

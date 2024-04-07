@@ -4,6 +4,7 @@ module org.example.interfazfx {
     requires java.sql;
 
     requires com.dlsc.formsfx;
+    requires javafx.graphics;
 
     opens org.example.interfazfx to javafx.fxml;
     exports org.example.interfazfx;

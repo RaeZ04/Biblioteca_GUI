@@ -7,13 +7,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class userLibraryController {
-
-    private DataBase dataBase = new DataBase();
 
     @FXML
     private Button exitButton;
