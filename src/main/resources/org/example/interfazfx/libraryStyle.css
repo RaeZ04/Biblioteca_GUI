@@ -1,0 +1,14 @@
+#header{
+    -fx-background-color: #202025
+}
+
+#formulario{
+    -fx-background-color: #202025
+}
+
+#textbox{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #ffffff transparent;
+    -fx-border-width: 0 0 1 0;
+    
+}
