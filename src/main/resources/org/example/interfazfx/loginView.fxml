@@ -89,7 +89,7 @@
                         <Image url="@media/loginicon.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="errorLogin" layoutX="112.0" layoutY="514.0" prefHeight="21.0" prefWidth="337.0" text="El email o contraseña son incorrectos" textFill="RED" visible="false">
+                  <Label fx:id="errorLogin" layoutX="112.0" layoutY="514.0" prefHeight="21.0" prefWidth="337.0" text="Email o contraseña incorrectos" textFill="RED" visible="false">
                      <font>
                         <Font size="15.0" />
                      </font>
