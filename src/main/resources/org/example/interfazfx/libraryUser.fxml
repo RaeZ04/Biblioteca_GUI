@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox id="base" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@registerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.interfazfx.adminLibraryController">
+<HBox id="base" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@registerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.interfazfx.userLibraryController">
    <children>
       <AnchorPane id="base" prefHeight="720.0" prefWidth="1304.0" stylesheets="@libraryStyle.css">
          <children>
@@ -21,23 +21,23 @@
                         <Image url="@media/loginicon.png" />
                      </image>
                   </ImageView>
-                  <Label alignment="CENTER" layoutX="45.0" layoutY="146.0" prefHeight="27.0" prefWidth="120.0" text="USER" textFill="WHITE">
+                  <Label fx:id="usernameLabel" alignment="CENTER" layoutX="45.0" layoutY="146.0" prefHeight="27.0" prefWidth="120.0" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" layoutX="669.0" layoutY="88.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css" />
+                  <TextField id="textbox" layoutX="881.0" layoutY="86.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css" />
                   <Button id="headerButton" fx:id="reservarlibrobutton" layoutX="253.0" layoutY="85.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="142.0" stylesheets="@libraryStyle.css" text="Reservar Libro">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button id="headerButton" fx:id="devolverlibrobutton" layoutX="438.0" layoutY="85.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="142.0" stylesheets="@libraryStyle.css" text="Devolver Libro">
+                  <Button id="headerButton" fx:id="devolverlibrobutton" layoutX="460.0" layoutY="85.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="142.0" stylesheets="@libraryStyle.css" text="Devolver Libro">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="966.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="1179.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@media/1200px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png" />
                      </image>
@@ -55,7 +55,7 @@
                </children>
             </AnchorPane>
             <ScrollPane id="scrollpanebg" layoutX="254.0" layoutY="249.0" prefHeight="423.0" prefWidth="784.0" stylesheets="@libraryStyle.css" />
-            <ImageView fitHeight="39.0" fitWidth="50.0" layoutX="9.0" layoutY="673.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="logout" fitHeight="39.0" fitWidth="50.0" layoutX="9.0" layoutY="673.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@media/logout.png" />
                </image>

@@ -67,4 +67,33 @@ public class DataBase {
         return null;
     }
 
+
+    public void insertarLibro(String titulo, String autor, String editorial, String isbn, int cantidad) throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
+        if (connection != null) {
+            String query = "INSERT INTO libros (titulo, autor, editorial, isbn, cantidad) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, titulo);
+            preparedStatement.setString(2, autor);
+            preparedStatement.setString(3, editorial);
+            preparedStatement.setString(4, isbn);
+            preparedStatement.setInt(5, cantidad);
+            preparedStatement.executeUpdate();
+            connection.close();
+        }
+    }
+
+    public void eliminarLibro(String isbn) throws SQLException {
+        Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
+        if (connection != null) {
+            String query = "DELETE FROM libros WHERE isbn = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, isbn);
+            preparedStatement.executeUpdate();
+            connection.close();
+        }
+    }
+
+
+
 }

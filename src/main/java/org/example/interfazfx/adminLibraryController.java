@@ -19,6 +19,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 public class adminLibraryController {
@@ -32,13 +34,29 @@ public class adminLibraryController {
     private Button minimizeButton;
 
     @FXML
-    private Button devolverlibrobutton;
+    private TextField nombrefield;
+
+    @FXML 
+    private TextField autorfield;
 
     @FXML
-    private Button reservarlibrobutton;
+    private TextField editorialfield;
 
     @FXML
-    private ImageView lupa;
+    private TextField isbnfield;
+
+    @FXML
+    private TextField cantfield;
+
+    @FXML
+    private Button añadirlibrobutton;
+
+    @FXML
+    private Button eliminarlibrobutton;
+
+    @FXML
+    private TextField isbnfieldeliminar;
+
 
     @FXML
     protected void initialize() {
@@ -82,9 +100,42 @@ public class adminLibraryController {
             });
         });
 
-        devolverlibrobutton.setOnMouseEntered(event -> devolverlibrobutton.setCursor(Cursor.HAND));
-        reservarlibrobutton.setOnMouseEntered(event -> reservarlibrobutton.setCursor(Cursor.HAND));
-        lupa.setOnMouseEntered(event -> lupa.setCursor(Cursor.HAND));
+
+        añadirlibrobutton.setOnAction(event -> {
+            String titulo = nombrefield.getText();
+            String autor = autorfield.getText();
+            String editorial = editorialfield.getText();
+            String isbn = isbnfield.getText();
+            int cantidad = Integer.parseInt(cantfield.getText());
+
+            try {
+                dataBase.insertarLibro(titulo, autor, editorial, isbn, cantidad);
+            } catch (SQLException e) {
+                // Manejar la excepción
+                e.printStackTrace();
+            }
+
+            // Limpiar los campos de texto después de insertar el libro
+            nombrefield.clear();
+            autorfield.clear();
+            editorialfield.clear();
+            isbnfield.clear();
+            cantfield.clear();
+        });
+
+        eliminarlibrobutton.setOnAction(event -> {
+            String isbn = isbnfieldeliminar.getText();
+        
+            try {
+                dataBase.eliminarLibro(isbn);
+            } catch (SQLException e) {
+                // Handle the exception
+                e.printStackTrace();
+            }
+        
+            // Clear the isbnfield after deleting the book
+            isbnfieldeliminar.clear();
+        });
 
     }
 

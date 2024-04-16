@@ -6,6 +6,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -101,30 +102,37 @@ public class LoginController {
             }
         });
 
-        loginButton.setOnAction(event -> {
-            try {
-
-                if (emailField.getText().equals("admin@edu.uah.es") && passField.getText().equals("admin")) {
-                    String username = dataBase.getUsername(emailField.getText());
-                    App.currentUsername = username;
-                    AppInitializer appInitializer = new AppInitializer();
-                    Stage stage = (Stage) loginButton.getScene().getWindow();
-                    appInitializer.changeScene(stage, "libraryAdmin.fxml");
-
-                } else if (dataBase.userExists(emailField.getText(), passField.getText())) {
-                    String username = dataBase.getUsername(emailField.getText());
-                    App.currentUsername = username;
-                    AppInitializer appInitializer = new AppInitializer();
-                    Stage stage = (Stage) loginButton.getScene().getWindow();
-                    appInitializer.changeScene(stage, "libraryUser.fxml");
-
-                } else {
-                    errorLogin.setVisible(true);
-                }
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
+        loginButton.setOnAction(event -> login());
+        emailField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                login();
+            }
+        });
+        passField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                login();
             }
         });
 
+    }
+
+    private void login() {
+        try {
+            if (emailField.getText().equals("admin@edu.uah.es") && passField.getText().equals("admin")) {
+                AppInitializer appInitializer = new AppInitializer();
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                appInitializer.changeScene(stage, "libraryAdmin.fxml");
+            } else if (dataBase.userExists(emailField.getText(), passField.getText())) {
+                String username = dataBase.getUsername(emailField.getText());
+                App.currentUsername = username;
+                AppInitializer appInitializer = new AppInitializer();
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                appInitializer.changeScene(stage, "libraryUser.fxml");
+            } else {
+                errorLogin.setVisible(true);
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }
