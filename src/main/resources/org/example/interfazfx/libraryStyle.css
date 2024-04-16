@@ -1,5 +1,10 @@
 #header{
-    -fx-background-color: #202025
+    -fx-background-color: #202025;
+    -fx-background-radius: 10 10 0 0;
+}
+
+#base{
+    -fx-background-radius: 10;
 }
 
 #formulario{
@@ -11,4 +16,44 @@
     -fx-border-color: transparent transparent #ffffff transparent;
     -fx-border-width: 0 0 1 0;
     
+}
+
+#headerButton{
+    -fx-background-color: linear-gradient(to right, #3ba9e6, #0c2092);
+    -fx-text-fill: white;
+    -fx-border-radius: 7;
+    -fx-background-radius: 15;
+}
+
+#headerButton:hover{
+    -fx-background-color: linear-gradient(to right, #3ba9e6, #2943d8);
+    -fx-text-fill: white;
+}
+
+#scrollpanebg .viewport{
+    -fx-background-color: #202025;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#scrollpanebg{
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#close{
+    -fx-background-color: rgba(32,32,37,255);
+    -fx-background-radius: 0 9 0 0;
+}
+
+#close:hover {
+    -fx-background-color: #dc4c4c;
+}
+
+#minimize{
+    -fx-background-color: rgba(32,32,37,255);
+}
+
+#minimize:hover {
+    -fx-background-color: rgb(56, 56, 63);
 }

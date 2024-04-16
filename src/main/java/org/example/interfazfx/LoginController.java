@@ -47,8 +47,7 @@ public class LoginController {
             Stage stage = (Stage) exitButton.getScene().getWindow();
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.seconds(0), new KeyValue(stage.opacityProperty(), 1.0)),
-                    new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 0.0))
-            );
+                    new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 0.0)));
             timeline.setOnFinished(e -> {
                 new Thread(() -> {
                     try {
@@ -70,8 +69,7 @@ public class LoginController {
                     if (!isNowMinimized) {
                         Timeline timeline = new Timeline(
                                 new KeyFrame(Duration.seconds(0), new KeyValue(stage.opacityProperty(), 0.0)),
-                                new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 1.0))
-                        );
+                                new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 1.0)));
                         timeline.play();
                     }
                 });
@@ -79,8 +77,7 @@ public class LoginController {
                 minimizeButton.setOnAction(event -> {
                     Timeline timeline = new Timeline(
                             new KeyFrame(Duration.seconds(0), new KeyValue(stage.opacityProperty(), 1.0)),
-                            new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 0.0))
-                    );
+                            new KeyFrame(Duration.seconds(0.1), new KeyValue(stage.opacityProperty(), 0.0)));
                     timeline.setOnFinished(e -> stage.setIconified(true));
                     timeline.play();
                 });
@@ -106,12 +103,21 @@ public class LoginController {
 
         loginButton.setOnAction(event -> {
             try {
-                if (dataBase.userExists(emailField.getText(), passField.getText())) {
+
+                if (emailField.getText().equals("admin@edu.uah.es") && passField.getText().equals("admin")) {
+                    String username = dataBase.getUsername(emailField.getText());
+                    App.currentUsername = username;
+                    AppInitializer appInitializer = new AppInitializer();
+                    Stage stage = (Stage) loginButton.getScene().getWindow();
+                    appInitializer.changeScene(stage, "libraryAdmin.fxml");
+
+                } else if (dataBase.userExists(emailField.getText(), passField.getText())) {
                     String username = dataBase.getUsername(emailField.getText());
                     App.currentUsername = username;
                     AppInitializer appInitializer = new AppInitializer();
                     Stage stage = (Stage) loginButton.getScene().getWindow();
                     appInitializer.changeScene(stage, "libraryUser.fxml");
+
                 } else {
                     errorLogin.setVisible(true);
                 }

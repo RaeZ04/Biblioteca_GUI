@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox id="base" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@registerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.interfazfx.RegisterController">
+<HBox id="base" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@registerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.interfazfx.adminLibraryController">
    <children>
       <AnchorPane prefHeight="720.0" prefWidth="1304.0">
          <children>
@@ -26,17 +26,17 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button layoutX="323.0" layoutY="78.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="177.0" text="Añadir Libro">
+                  <Button id="headerButton" layoutX="300.0" layoutY="66.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="177.0" stylesheets="@libraryStyle.css" text="Añadir Libro">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </Button>
-                  <Button layoutX="598.0" layoutY="78.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="177.0" text="Eliminar Libro">
+                  <Button id="headerButton" layoutX="590.0" layoutY="66.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="177.0" stylesheets="@libraryStyle.css" text="Eliminar Libro">
                      <font>
                         <Font size="21.0" />
                      </font>
                   </Button>
-                  <Button layoutX="866.0" layoutY="78.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="177.0" text="Mostrar Libros">
+                  <Button id="headerButton" layoutX="865.0" layoutY="66.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="177.0" stylesheets="@libraryStyle.css" text="Mostrar Libros">
                      <font>
                         <Font size="21.0" />
                      </font>
