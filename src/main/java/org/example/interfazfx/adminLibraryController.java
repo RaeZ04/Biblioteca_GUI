@@ -73,6 +73,7 @@ public class adminLibraryController {
 
     @FXML
     private TextField isbnfieldeliminar;
+    
     @FXML
     private ListView<Libro> listaLibros;
 

@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -26,18 +26,8 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" layoutX="881.0" layoutY="86.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css" />
-                  <Button id="headerButton" fx:id="reservarlibrobutton" layoutX="253.0" layoutY="85.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="142.0" stylesheets="@libraryStyle.css" text="Reservar Libro">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button id="headerButton" fx:id="devolverlibrobutton" layoutX="460.0" layoutY="85.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="142.0" stylesheets="@libraryStyle.css" text="Devolver Libro">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="1179.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField id="textbox" layoutX="558.0" layoutY="74.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css" />
+                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="854.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@media/1200px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png" />
                      </image>
@@ -54,12 +44,44 @@
                               </Button>
                </children>
             </AnchorPane>
-            <ScrollPane id="scrollpanebg" layoutX="254.0" layoutY="249.0" prefHeight="423.0" prefWidth="784.0" stylesheets="@libraryStyle.css" />
             <ImageView fx:id="logout" fitHeight="39.0" fitWidth="50.0" layoutX="9.0" layoutY="673.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@media/logout.png" />
                </image>
             </ImageView>
+            <ListView id="listaLibros" fx:id="listaLibros" layoutX="166.0" layoutY="245.0" prefHeight="423.0" prefWidth="552.0" stylesheets="@libraryStyle.css" />
+            <AnchorPane id="formulario" layoutX="764.0" layoutY="245.0" prefHeight="423.0" prefWidth="494.0" stylesheets="@libraryStyle.css">
+               <children>
+                  <Label layoutX="45.0" layoutY="115.0" prefHeight="30.0" prefWidth="84.0" text="Nombre:" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textbox" fx:id="nombrefield" layoutX="140.0" layoutY="115.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  <Label layoutX="45.0" layoutY="182.0" prefHeight="30.0" prefWidth="84.0" text="Autor:" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textbox" fx:id="autorfield" layoutX="140.0" layoutY="182.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  <Label layoutX="45.0" layoutY="256.0" prefHeight="30.0" prefWidth="84.0" text="ISBN:" textFill="WHITE">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textbox" fx:id="isbnfield" layoutX="140.0" layoutY="253.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  <Label alignment="CENTER" layoutX="9.0" layoutY="35.0" prefHeight="34.0" prefWidth="476.0" text="DEVOLVER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="23.0" />
+                     </font>
+                  </Label>
+                  <Button id="headerButton" fx:id="devolverlibrobutton" layoutX="181.0" layoutY="354.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="142.0" stylesheets="@libraryStyle.css" text="Devolver Libro">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
