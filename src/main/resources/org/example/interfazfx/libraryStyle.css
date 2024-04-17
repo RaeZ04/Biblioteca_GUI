@@ -8,7 +8,9 @@
 }
 
 #formulario{
-    -fx-background-color: #202025
+    -fx-background-color: #202025;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
 }
 
 #textbox{
@@ -56,4 +58,34 @@
 
 #minimize:hover {
     -fx-background-color: rgb(56, 56, 63);
+}
+
+#listaLibros{
+    -fx-background-color: #202025;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#listaLibros .list-cell {
+    -fx-background-color: #202025;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#listaLibros .scroll-bar {
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+
+#listaLibros .scroll-bar .increment-arrow,
+#listaLibros .scroll-bar .decrement-arrow,
+#listaLibros .scroll-bar .increment-button,
+#listaLibros .scroll-bar .decrement-button {
+    -fx-max-height: 0;
+    -fx-max-width: 0;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+    -fx-min-height: 0;
+    -fx-min-width: 0;
 }
