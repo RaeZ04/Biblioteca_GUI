@@ -89,3 +89,12 @@
     -fx-min-height: 0;
     -fx-min-width: 0;
 }
+
+
+.text-field {
+    -fx-text-fill: white;
+}
+
+.text-field:focused {
+    -fx-focus-color: white;
+}

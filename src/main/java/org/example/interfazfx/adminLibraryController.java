@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -32,6 +33,7 @@ import javafx.util.Duration;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -69,9 +71,6 @@ public class adminLibraryController {
     private Button añadirlibrobutton;
 
     @FXML
-    private Button eliminarlibrobutton;
-
-    @FXML
     private TextField isbnfieldeliminar;
     
     @FXML
@@ -104,8 +103,8 @@ public class adminLibraryController {
                     VBox vboxDetalles = new VBox(tituloLabel, autorLabel, editorialLabel, isbnLabel, cantidadLabel);
                     vboxDetalles.setAlignment(Pos.CENTER);
         
-                    Button reservarButton = new Button("Reservar");
-                    reservarButton.setOnAction(event -> reservarLibro(libro));
+                    Button reservarButton = new Button("Eliminar");
+                    reservarButton.setOnAction(event -> Eliminar(libro));
                     reservarButton.setStyle("-fx-background-radius: 15;"); // Añade un radio de borde de 15
                     VBox vboxBoton = new VBox(reservarButton);
                     vboxBoton.setAlignment(Pos.CENTER); // Centra el botón en el VBox
@@ -226,29 +225,34 @@ public class adminLibraryController {
             listaLibros.getItems().setAll(librosActualizados);
         });
 
-        eliminarlibrobutton.setOnAction(event -> {
-            String isbn = isbnfieldeliminar.getText();
-
-            try {
-                dataBase.eliminarLibro(isbn);
-            } catch (SQLException e) {
-                // Handle the exception
-                e.printStackTrace();
-            }
-
-            // Clear the isbnfield after deleting the book
-            isbnfieldeliminar.clear();
-
-            List<Libro> librosActualizados = obtenerLibros();
-            librosActualizados.sort(Comparator.comparing(Libro::getTitulo));
-            listaLibros.getItems().setAll(librosActualizados);
-            
-        });
-
     }
 
-    public void reservarLibro(Libro libro) {
-        // Aquí iría tu código para reservar el libro seleccionado
+    public void Eliminar(Libro libro) {
+        String sql = "DELETE FROM libros WHERE id = ?";
+
+        try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Establecer el valor del parámetro ID
+            pstmt.setInt(1, libro.getId());
+            // Ejecutar la consulta de eliminación
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Actualizar la lista de libros después de la eliminación
+        List<Libro> librosActualizados = obtenerLibros();
+        librosActualizados.sort(Comparator.comparing(Libro::getTitulo));
+        listaLibros.getItems().setAll(librosActualizados);
+
+        // Mostrar una alerta
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Libro eliminado");
+        alert.setHeaderText(null);
+        alert.setContentText("El libro '" + libro.getTitulo() + "' ha sido eliminado.");
+        alert.showAndWait();
     }
 
     public List<Libro> obtenerLibros() {

@@ -26,21 +26,6 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button id="headerButton" fx:id="añadirlibrobutton" layoutX="300.0" layoutY="66.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="177.0" stylesheets="@libraryStyle.css" text="Añadir Libro">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Button>
-                  <Button id="headerButton" fx:id="eliminarlibrobutton" layoutX="590.0" layoutY="66.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="177.0" stylesheets="@libraryStyle.css" text="Eliminar Libro">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Button>
-                  <Button id="headerButton" layoutX="865.0" layoutY="66.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="184.0" stylesheets="@libraryStyle.css" text="Mostrar Libros">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Button>
                                              <Button id="close" fx:id="exitButton" layoutX="1230.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" stylesheets="@libraryStyle.css" text="✕" textFill="#e3dfea">
                                         <font>
                                             <Font size="18.0" />
@@ -51,56 +36,61 @@
                                             <Font name="System Bold" size="18.0" />
                                         </font>
                                     </Button>
+                  <TextField id="textbox" layoutX="255.0" layoutY="98.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css" />
+                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="549.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@media/1200px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="844.0" layoutY="93.0" prefHeight="34.0" prefWidth="265.0" text="Gestionar Usuarios" textFill="WHITE">
+                     <font>
+                        <Font size="27.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
-            <AnchorPane id="formulario" layoutX="730.0" layoutY="245.0" prefHeight="423.0" prefWidth="494.0" stylesheets="@libraryStyle.css">
+            <AnchorPane id="formulario" layoutX="709.0" layoutY="245.0" prefHeight="423.0" prefWidth="515.0" stylesheets="@libraryStyle.css">
                <children>
-                  <Label layoutX="45.0" layoutY="65.0" prefHeight="30.0" prefWidth="84.0" text="Nombre:" textFill="WHITE">
+                  <Label layoutX="35.0" layoutY="98.0" prefHeight="30.0" prefWidth="100.0" text="Nombre:" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" fx:id="nombrefield" layoutX="140.0" layoutY="62.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
-                  <Label layoutX="45.0" layoutY="109.0" prefHeight="30.0" prefWidth="84.0" text="Autor:" textFill="WHITE">
+                  <TextField id="textbox" fx:id="nombrefield" layoutX="140.0" layoutY="97.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  <Label alignment="TOP_LEFT" layoutX="35.0" layoutY="150.0" prefHeight="30.0" prefWidth="89.0" text="Autor:" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" fx:id="autorfield" layoutX="140.0" layoutY="106.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
-                  <Label layoutX="45.0" layoutY="154.0" prefHeight="30.0" prefWidth="84.0" text="Editorial:" textFill="WHITE">
+                  <TextField id="textbox" fx:id="autorfield" layoutX="140.0" layoutY="147.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  <Label layoutX="35.0" layoutY="200.0" prefHeight="30.0" prefWidth="100.0" text="Editorial:" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" fx:id="editorialfield" layoutX="140.0" layoutY="151.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
-                  <Label layoutX="45.0" layoutY="199.0" prefHeight="30.0" prefWidth="84.0" text="ISBN:" textFill="WHITE">
+                  <TextField id="textbox" fx:id="editorialfield" layoutX="140.0" layoutY="197.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  <Label layoutX="35.0" layoutY="250.0" prefHeight="30.0" prefWidth="100.0" text="ISBN:" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" fx:id="isbnfield" layoutX="140.0" layoutY="196.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
-                  <Label fx:id="cantidadfield" layoutX="45.0" layoutY="246.0" prefHeight="30.0" prefWidth="84.0" text="Cantidad:" textFill="WHITE">
+                  <TextField id="textbox" fx:id="isbnfield" layoutX="140.0" layoutY="247.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  <Label fx:id="cantidadfield" layoutX="35.0" layoutY="300.0" prefHeight="30.0" prefWidth="100.0" text="Cantidad:" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" fx:id="cantfield" layoutX="140.0" layoutY="243.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  <TextField id="textbox" fx:id="cantfield" layoutX="140.0" layoutY="297.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
                   <Label alignment="CENTER" layoutX="9.0" layoutY="19.0" prefHeight="34.0" prefWidth="476.0" text="AÑADIR" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="23.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="9.0" layoutY="305.0" prefHeight="34.0" prefWidth="476.0" text="ELIMINAR" textFill="WHITE">
+                  <Button id="headerButton" fx:id="añadirlibrobutton" layoutX="164.0" layoutY="361.0" minHeight="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="177.0" stylesheets="@libraryStyle.css" text="Añadir Libro">
                      <font>
-                        <Font name="System Bold" size="23.0" />
+                        <Font size="21.0" />
                      </font>
-                  </Label>
-                  <Label layoutX="45.0" layoutY="353.0" prefHeight="30.0" prefWidth="84.0" text="ISBN:" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField id="textbox" fx:id="isbnfieldeliminar" layoutX="140.0" layoutY="350.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
+                  </Button>
                </children>
             </AnchorPane>
             <ListView id="listaLibros" fx:id="listaLibros" layoutX="76.0" layoutY="245.0" prefHeight="423.0" prefWidth="570.0" stylesheets="@libraryStyle.css" />

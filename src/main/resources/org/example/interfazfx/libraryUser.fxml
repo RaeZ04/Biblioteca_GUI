@@ -26,8 +26,8 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" layoutX="558.0" layoutY="74.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css" />
-                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="854.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField id="textbox" layoutX="511.0" layoutY="69.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css" />
+                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="804.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@media/1200px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png" />
                      </image>
@@ -42,6 +42,11 @@
                                       <Font size="18.0" />
                                   </font>
                               </Button>
+                  <Label layoutX="291.0" layoutY="69.0" text="Mis Libros" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <ImageView fx:id="logout" fitHeight="39.0" fitWidth="50.0" layoutX="9.0" layoutY="673.0" pickOnBounds="true" preserveRatio="true">
