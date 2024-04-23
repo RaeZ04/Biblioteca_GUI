@@ -65,6 +65,9 @@ public class userLibraryController {
     private TextField isbnfield;
 
     @FXML
+    private Label mislibros;
+
+    @FXML
     public void initialize() {
 
         listaLibros.setCellFactory(param -> new ListCell<Libro>() {
@@ -148,7 +151,7 @@ public class userLibraryController {
 
         listaLibros.getItems().setAll(libros);
 
-        usernameLabel.setText(App.currentUsername);
+        
 
         // Configuración del botón de salida
         exitButton.setOnAction(event -> {
@@ -204,11 +207,23 @@ public class userLibraryController {
 
         });
 
+        mislibros.setOnMouseClicked(event -> {
+
+            AppInitializer appInitializer = new AppInitializer();
+            try {
+                appInitializer.changeScene((Stage) logout.getScene().getWindow(), "userProfile.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+
         // Mostrar mano en todos los botones
 
         lupa.setOnMouseEntered(event -> lupa.setCursor(Cursor.HAND));
         logout.setOnMouseEntered(event -> logout.setCursor(Cursor.HAND));
         devolverlibrobutton.setOnMouseEntered(event -> devolverlibrobutton.setCursor(Cursor.HAND));
+        mislibros.setOnMouseEntered(event -> mislibros.setCursor(Cursor.HAND));
 
         devolverlibrobutton.setOnAction(event ->{
 
