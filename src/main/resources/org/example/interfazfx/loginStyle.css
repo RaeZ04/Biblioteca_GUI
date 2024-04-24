@@ -22,6 +22,10 @@
     -fx-border-radius: 100;
 }
 
+#BotonIniciar:hover {
+    -fx-background-color: linear-gradient(to right, rgba(2,158,210,255), rgba(2,158,210,0.7));
+}
+
 #close{
     -fx-background-color: rgb(227, 233, 234);
     -fx-background-radius: 0 9 0 0;

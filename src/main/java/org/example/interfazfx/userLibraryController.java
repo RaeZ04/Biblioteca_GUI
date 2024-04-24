@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -69,6 +68,8 @@ public class userLibraryController {
 
     @FXML
     public void initialize() {
+
+        usernameLabel.setText(App.currentUsername);
 
         listaLibros.setCellFactory(param -> new ListCell<Libro>() {
             @Override

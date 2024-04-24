@@ -12,7 +12,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
