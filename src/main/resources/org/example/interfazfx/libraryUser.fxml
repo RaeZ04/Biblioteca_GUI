@@ -21,13 +21,13 @@
                         <Image url="@media/loginicon.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="usernameLabel" alignment="CENTER" layoutX="45.0" layoutY="146.0" prefHeight="27.0" prefWidth="120.0" textFill="WHITE">
+                  <Label fx:id="usernameLabel" alignment="CENTER" layoutX="3.0" layoutY="146.0" prefHeight="27.0" prefWidth="208.0" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" layoutX="452.0" layoutY="72.0" prefHeight="26.0" prefWidth="597.0" stylesheets="@libraryStyle.css" />
-                  <ImageView fx:id="lupa" fitHeight="68.0" fitWidth="67.0" layoutX="994.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField id="textbox" fx:id="buscador" layoutX="446.0" layoutY="74.0" prefHeight="26.0" prefWidth="597.0" stylesheets="@libraryStyle.css" />
+                  <ImageView fx:id="lupa" fitHeight="68.0" fitWidth="67.0" layoutX="985.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@media/1200px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png" />
                      </image>
@@ -42,7 +42,7 @@
                                       <Font size="18.0" />
                                   </font>
                               </Button>
-                  <Label fx:id="mislibros" layoutX="253.0" layoutY="69.0" text="Mis Libros" textFill="WHITE">
+                  <Label fx:id="mislibros" alignment="CENTER" layoutX="253.0" layoutY="69.0" prefHeight="45.0" prefWidth="150.0" text="Mis Libros" textFill="WHITE">
                      <font>
                         <Font size="30.0" />
                      </font>
@@ -54,39 +54,7 @@
                   <Image url="@media/logout.png" />
                </image>
             </ImageView>
-            <ListView id="listaLibros" fx:id="listaLibros" layoutX="166.0" layoutY="245.0" prefHeight="423.0" prefWidth="552.0" stylesheets="@libraryStyle.css" />
-            <AnchorPane id="formulario" layoutX="764.0" layoutY="245.0" prefHeight="423.0" prefWidth="494.0" stylesheets="@libraryStyle.css">
-               <children>
-                  <Label layoutX="45.0" layoutY="115.0" prefHeight="30.0" prefWidth="84.0" text="Nombre:" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField id="textbox" fx:id="nombrefield" layoutX="140.0" layoutY="115.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
-                  <Label layoutX="45.0" layoutY="182.0" prefHeight="30.0" prefWidth="84.0" text="Autor:" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField id="textbox" fx:id="autorfield" layoutX="140.0" layoutY="182.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
-                  <Label layoutX="45.0" layoutY="256.0" prefHeight="30.0" prefWidth="84.0" text="ISBN:" textFill="WHITE">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <TextField id="textbox" fx:id="isbnfield" layoutX="140.0" layoutY="253.0" prefHeight="26.0" prefWidth="308.0" stylesheets="@libraryStyle.css" />
-                  <Label alignment="CENTER" layoutX="9.0" layoutY="35.0" prefHeight="34.0" prefWidth="476.0" text="DEVOLVER" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="23.0" />
-                     </font>
-                  </Label>
-                  <Button id="headerButton" fx:id="devolverlibrobutton" layoutX="181.0" layoutY="354.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="142.0" stylesheets="@libraryStyle.css" text="Devolver Libro">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-               </children>
-            </AnchorPane>
+            <ListView id="listaLibros" fx:id="listaLibros" layoutX="108.0" layoutY="245.0" prefHeight="423.0" prefWidth="1059.0" stylesheets="@libraryStyle.css" />
          </children>
       </AnchorPane>
    </children>

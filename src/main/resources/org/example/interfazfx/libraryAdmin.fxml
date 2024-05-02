@@ -36,17 +36,15 @@
                                             <Font name="System Bold" size="18.0" />
                                         </font>
                                     </Button>
-                  <TextField id="textbox" layoutX="255.0" layoutY="98.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css" />
-                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="549.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField id="textbox" fx:id="buscador" layoutX="255.0" layoutY="98.0" prefHeight="26.0" prefWidth="337.0" stylesheets="@libraryStyle.css">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <ImageView fx:id="lupa" fitHeight="48.0" fitWidth="47.0" layoutX="549.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@media/1200px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="844.0" layoutY="93.0" prefHeight="34.0" prefWidth="265.0" text="Gestionar Usuarios" textFill="WHITE">
-                     <font>
-                        <Font size="27.0" />
-                     </font>
-                  </Label>
                </children>
             </AnchorPane>
             <AnchorPane id="formulario" layoutX="709.0" layoutY="245.0" prefHeight="423.0" prefWidth="515.0" stylesheets="@libraryStyle.css">

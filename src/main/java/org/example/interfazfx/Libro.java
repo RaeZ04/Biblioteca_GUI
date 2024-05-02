@@ -17,6 +17,15 @@ public class Libro {
         this.cantidad = cantidad;
     }
 
+    public Libro(String titulo, String autor, String editorial, String isbn, int cantidad) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.editorial = editorial;
+        this.isbn = isbn;
+        this.cantidad = cantidad;
+    }
+
+
     // Getters y setters para cada campo
 
     public int getId() {

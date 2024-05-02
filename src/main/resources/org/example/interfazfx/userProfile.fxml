@@ -26,8 +26,8 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField id="textbox" layoutX="456.0" layoutY="72.0" prefHeight="26.0" prefWidth="597.0" stylesheets="@libraryStyle.css" />
-                  <ImageView fx:id="lupa" fitHeight="68.0" fitWidth="67.0" layoutX="994.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField id="textbox" fx:id="buscador" layoutX="446.0" layoutY="74.0" prefHeight="26.0" prefWidth="597.0" stylesheets="@libraryStyle.css" />
+                  <ImageView fx:id="lupa" fitHeight="68.0" fitWidth="67.0" layoutX="985.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@media/1200px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png" />
                      </image>
@@ -42,7 +42,7 @@
                                       <Font size="18.0" />
                                   </font>
                               </Button>
-                  <Label fx:id="inicio" layoutX="291.0" layoutY="69.0" text="Inicio" textFill="WHITE">
+                  <Label fx:id="inicio" alignment="CENTER" layoutX="291.0" layoutY="69.0" minHeight="-Infinity" prefWidth="150.0" text="Inicio" textFill="WHITE">
                      <font>
                         <Font name="Peddana Regular" size="30.0" />
                      </font>
@@ -54,7 +54,7 @@
                   <Image url="@media/logout.png" />
                </image>
             </ImageView>
-            <ListView id="listaLibros" fx:id="listaLibros" layoutX="167.0" layoutY="245.0" prefHeight="423.0" prefWidth="951.0" stylesheets="@libraryStyle.css" />
+            <ListView id="listaLibros" fx:id="listaLibros" layoutX="108.0" layoutY="245.0" prefHeight="423.0" prefWidth="1059.0" stylesheets="@libraryStyle.css" />
          </children>
       </AnchorPane>
    </children>

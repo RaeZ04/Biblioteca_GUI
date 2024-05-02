@@ -4,7 +4,14 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -18,9 +25,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -48,7 +58,12 @@ public class userProfileController {
     private ImageView lupa;
 
     @FXML
+    private TextField buscador;
+
+    @FXML
     protected void initialize() {
+
+        
 
         usernameLabel.setText(App.currentUsername);
 
@@ -119,6 +134,14 @@ public class userProfileController {
 
         });
 
+        buscador.textProperty().addListener((observable, oldValue, newValue) -> {
+            List<Libro> librosBuscados = obtenerLibros(newValue);
+            librosBuscados.sort(Comparator.comparing(Libro::getTitulo));
+            listaLibros.getItems().setAll(librosBuscados);
+        });
+
+        usernameLabel.setText(App.currentUsername);
+
         listaLibros.setCellFactory(param -> new ListCell<Libro>() {
             @Override
             protected void updateItem(Libro libro, boolean empty) {
@@ -143,7 +166,7 @@ public class userProfileController {
                     VBox vboxDetalles = new VBox(tituloLabel, autorLabel, editorialLabel, isbnLabel, cantidadLabel);
                     vboxDetalles.setAlignment(Pos.CENTER);
 
-                    Button devolverButton = new Button("Reservar");
+                    Button devolverButton = new Button("Devolver");
                     devolverButton.setOnAction(event -> devolverLibro(libro));
                     devolverButton.setStyle("-fx-background-radius: 15;"); // Añade un radio de borde de 15
                     VBox vboxBoton = new VBox(devolverButton);
@@ -179,33 +202,161 @@ public class userProfileController {
                 }
             }
         });
+
+        // Crea un rectángulo redondeado para usar como clip
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(32);
+        clip.setArcHeight(32);
+
+        // Asegúrate de que el clip se redimensione con la ListView
+        listaLibros.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
+            clip.setWidth(newValue.getWidth());
+            clip.setHeight(newValue.getHeight());
+        });
+
+        // Aplica el clip a la ListView
+        listaLibros.setClip(clip);
+
+        List<Libro> libros = obtenerLibros();
+        libros.sort(Comparator.comparing(Libro::getTitulo));
+        listaLibros.setFocusTraversable(false);
+
+        listaLibros.getItems().setAll(libros);
     }
 
     public void devolverLibro(Libro libro) {
-        String sql = "INSERT INTO reservas(usuario, titulo, autor, editorial, isbn, cantidad) VALUES(?, ?, ?, ?, ?, ?)";
+        TextInputDialog dialog = new TextInputDialog("1");
+        dialog.setTitle("Devolución de libro");
+        dialog.setHeaderText("Ingrese la cantidad de libros que desea devolver:");
+        Optional<String> result = dialog.showAndWait();
+    
+        if (result.isPresent()){
+            String input = result.get();
+            if (input.isEmpty() || input.equals("0")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error de devolución");
+                alert.setHeaderText(null);
+                alert.setContentText("La cantidad ingresada es incorrecta.");
+                alert.showAndWait();
+                return;
+            }
+    
+            int cantidadDevolver = Integer.parseInt(input);
+            if (cantidadDevolver > libro.getCantidad()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error de devolución");
+                alert.setHeaderText(null);
+                alert.setContentText("No puedes devolver más libros de los que tienes reservados.");
+                alert.showAndWait();
+                return;
+            }
+    
+            String sqlReserva = "UPDATE reservas SET cantidad = cantidad - ? WHERE usuario = ? AND isbn = ?";
+            String sqlCheckLibro = "SELECT COUNT(*) FROM libros WHERE isbn = ?";
+            String sqlInsertLibro = "INSERT INTO libros(id,titulo, autor, editorial, isbn, cantidad) VALUES(pk_id_libros_sec.nextval,?, ?, ?, ?, ?)";
+            String sqlUpdateLibro = "UPDATE libros SET cantidad = cantidad + ? WHERE isbn = ?";
+            String sqlEliminacion = "DELETE FROM reservas WHERE usuario = ? AND isbn = ? AND cantidad = 0";
+    
+            try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
+                    PreparedStatement pstmtReserva = conn.prepareStatement(sqlReserva);
+                    PreparedStatement pstmtCheckLibro = conn.prepareStatement(sqlCheckLibro);
+                    PreparedStatement pstmtInsertLibro = conn.prepareStatement(sqlInsertLibro);
+                    PreparedStatement pstmtUpdateLibro = conn.prepareStatement(sqlUpdateLibro);
+                    PreparedStatement pstmtEliminacion = conn.prepareStatement(sqlEliminacion)) {
+    
+                pstmtReserva.setInt(1, cantidadDevolver);
+                pstmtReserva.setString(2, App.currentUsername);
+                pstmtReserva.setString(3, libro.getIsbn());
+    
+                pstmtReserva.executeUpdate();
+    
+                pstmtCheckLibro.setString(1, libro.getIsbn());
+                ResultSet rs = pstmtCheckLibro.executeQuery();
+                if (rs.next() && rs.getInt(1) > 0) {
+                    pstmtUpdateLibro.setInt(1, cantidadDevolver);
+                    pstmtUpdateLibro.setString(2, libro.getIsbn());
+                    pstmtUpdateLibro.executeUpdate();
+                } else {
+                    pstmtInsertLibro.setString(1, libro.getTitulo());
+                    pstmtInsertLibro.setString(2, libro.getAutor());
+                    pstmtInsertLibro.setString(3, libro.getEditorial());
+                    pstmtInsertLibro.setString(4, libro.getIsbn());
+                    pstmtInsertLibro.setInt(5, cantidadDevolver);
+                    pstmtInsertLibro.executeUpdate();
+                }
+    
+                pstmtEliminacion.setString(1, App.currentUsername);
+                pstmtEliminacion.setString(2, libro.getIsbn());
+    
+                pstmtEliminacion.executeUpdate();
+    
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Devolución exitosa");
+                alert.setHeaderText(null);
+                alert.setContentText("Se ha devuelto el libro correctamente.");
+                alert.showAndWait();
+    
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    
+        List<Libro> libros = obtenerLibros();
+        libros.sort(Comparator.comparing(Libro::getTitulo));
+        listaLibros.setFocusTraversable(false);
+    
+        listaLibros.getItems().setAll(libros);
+    }
 
+    public List<Libro> obtenerLibros() {
+        List<Libro> libros = new ArrayList<>();
+        String sql = "SELECT titulo, autor, editorial, isbn, SUM(cantidad) as cantidad FROM reservas WHERE usuario = ? GROUP BY titulo, autor, editorial, isbn";
+    
         try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+    
             pstmt.setString(1, App.currentUsername);
-            pstmt.setString(2, libro.getTitulo());
-            pstmt.setString(3, libro.getAutor());
-            pstmt.setString(4, libro.getEditorial());
-            pstmt.setString(5, libro.getIsbn());
-            pstmt.setInt(6, libro.getCantidad());
-
-            pstmt.executeUpdate();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Reserva exitosa");
-            alert.setHeaderText(null);
-            alert.setContentText("Se ha devuelto el libro correctamente.");
-            alert.showAndWait();
-
+    
+            ResultSet rs = pstmt.executeQuery();
+    
+            while (rs.next()) {
+                Libro libro = new Libro(rs.getString("titulo"), rs.getString("autor"),
+                        rs.getString("editorial"), rs.getString("isbn"), rs.getInt("cantidad"));
+                libros.add(libro);
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+    
+        return libros;
     }
+
+    public List<Libro> obtenerLibros(String busqueda) {
+        List<Libro> libros = new ArrayList<>();
+        String sql = "SELECT titulo, autor, editorial, isbn, SUM(cantidad) as cantidad FROM reservas WHERE (titulo LIKE ? OR autor LIKE ? OR editorial LIKE ? OR isbn LIKE ?) GROUP BY titulo, autor, editorial, isbn";
+    
+        try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    
+            String busquedaConComodines = "%" + busqueda + "%";
+            pstmt.setString(1, busquedaConComodines);
+            pstmt.setString(2, busquedaConComodines);
+            pstmt.setString(3, busquedaConComodines);
+            pstmt.setString(4, busquedaConComodines);
+    
+            ResultSet rs = pstmt.executeQuery();
+    
+            while (rs.next()) {
+                Libro libro = new Libro(rs.getString("titulo"), rs.getString("autor"),
+                        rs.getString("editorial"), rs.getString("isbn"), rs.getInt("cantidad"));
+                libros.add(libro);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    
+        return libros;
+    }
+
 
 }

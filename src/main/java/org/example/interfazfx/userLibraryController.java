@@ -10,6 +10,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -24,6 +26,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -49,25 +52,22 @@ public class userLibraryController {
     private ImageView lupa;
 
     @FXML
-    private Button devolverlibrobutton;
-
-    @FXML
     private ListView<Libro> listaLibros;
-
-    @FXML
-    private TextField nombrefield;
-    
-    @FXML
-    private TextField autorfield;
-
-    @FXML
-    private TextField isbnfield;
 
     @FXML
     private Label mislibros;
 
     @FXML
+    private TextField buscador;
+
+    @FXML
     public void initialize() {
+
+        buscador.textProperty().addListener((observable, oldValue, newValue) -> {
+            List<Libro> librosBuscados = obtenerLibros(newValue);
+            librosBuscados.sort(Comparator.comparing(Libro::getTitulo));
+            listaLibros.getItems().setAll(librosBuscados);
+        });
 
         usernameLabel.setText(App.currentUsername);
 
@@ -223,66 +223,80 @@ public class userLibraryController {
 
         lupa.setOnMouseEntered(event -> lupa.setCursor(Cursor.HAND));
         logout.setOnMouseEntered(event -> logout.setCursor(Cursor.HAND));
-        devolverlibrobutton.setOnMouseEntered(event -> devolverlibrobutton.setCursor(Cursor.HAND));
         mislibros.setOnMouseEntered(event -> mislibros.setCursor(Cursor.HAND));
-
-        devolverlibrobutton.setOnAction(event ->{
-
-            String nombre = nombrefield.getText();
-            String autor = autorfield.getText();
-            String isbn = isbnfield.getText();
-
-            String sql = "DELETE FROM reservas WHERE usuario = ? AND titulo = ? AND autor = ? AND isbn = ?";
-
-            try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
-                    PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-                pstmt.setString(1, App.currentUsername);
-                pstmt.setString(2, nombre);
-                pstmt.setString(3, autor);
-                pstmt.setString(4, isbn);
-
-                pstmt.executeUpdate();
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Devolución exitosa");
-                alert.setHeaderText(null);
-                alert.setContentText("Se ha devuelto el libro correctamente.");
-                alert.showAndWait();
-
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-
-        });
-
 
     }
 
     public void reservarLibro(Libro libro) {
-        String sql = "INSERT INTO reservas(usuario, titulo, autor, editorial, isbn, cantidad) VALUES(?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, App.currentUsername);
-            pstmt.setString(2, libro.getTitulo());
-            pstmt.setString(3, libro.getAutor());
-            pstmt.setString(4, libro.getEditorial());
-            pstmt.setString(5, libro.getIsbn());
-            pstmt.setInt(6, libro.getCantidad());
-
-            pstmt.executeUpdate();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Reserva exitosa");
-            alert.setHeaderText(null);
-            alert.setContentText("Se ha reservado el libro correctamente.");
-            alert.showAndWait();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        TextInputDialog dialog = new TextInputDialog("1");
+        dialog.setTitle("Reserva de libro");
+        dialog.setHeaderText("Ingrese la cantidad de libros que desea reservar:");
+        Optional<String> result = dialog.showAndWait();
+    
+        if (result.isPresent()){
+            String input = result.get();
+            if (input.isEmpty() || input.equals("0")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error de reserva");
+                alert.setHeaderText(null);
+                alert.setContentText("La cantidad ingresada es incorrecta.");
+                alert.showAndWait();
+                return;
+            }
+    
+            int cantidadReservar = Integer.parseInt(input);
+            if (cantidadReservar > libro.getCantidad()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error de reserva");
+                alert.setHeaderText(null);
+                alert.setContentText("No hay suficientes libros disponibles para reservar.");
+                alert.showAndWait();
+                return;
+            }
+    
+            String sqlReserva = "INSERT INTO reservas(id, usuario, titulo, autor, editorial, isbn, cantidad) VALUES(pk_id_reservas_sec.nextval,?, ?, ?, ?, ?, ?)";
+            String sqlActualizacion = "UPDATE libros SET cantidad = cantidad - ? WHERE isbn = ?";
+            String sqlEliminacion = "DELETE FROM libros WHERE isbn = ? AND cantidad = 0";
+    
+            try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
+                 PreparedStatement pstmtReserva = conn.prepareStatement(sqlReserva);
+                 PreparedStatement pstmtActualizacion = conn.prepareStatement(sqlActualizacion);
+                 PreparedStatement pstmtEliminacion = conn.prepareStatement(sqlEliminacion)) {
+    
+                pstmtReserva.setString(1, App.currentUsername);
+                pstmtReserva.setString(2, libro.getTitulo());
+                pstmtReserva.setString(3, libro.getAutor());
+                pstmtReserva.setString(4, libro.getEditorial());
+                pstmtReserva.setString(5, libro.getIsbn());
+                pstmtReserva.setInt(6, cantidadReservar);
+    
+                pstmtReserva.executeUpdate();
+    
+                pstmtActualizacion.setInt(1, cantidadReservar);
+                pstmtActualizacion.setString(2, libro.getIsbn());
+    
+                pstmtActualizacion.executeUpdate();
+    
+                pstmtEliminacion.setString(1, libro.getIsbn());
+    
+                pstmtEliminacion.executeUpdate();
+    
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Reserva exitosa");
+                alert.setHeaderText(null);
+                alert.setContentText("Se ha reservado el libro correctamente.");
+                alert.showAndWait();
+    
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
         }
+    
+        List<Libro> libros = obtenerLibros();
+        libros.sort(Comparator.comparing(Libro::getTitulo));
+        listaLibros.setFocusTraversable(false);
+    
+        listaLibros.getItems().setAll(libros);
     }
 
     public List<Libro> obtenerLibros() {
@@ -292,6 +306,33 @@ public class userLibraryController {
         try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"),
+                        rs.getString("editorial"), rs.getString("isbn"), rs.getInt("cantidad"));
+                libros.add(libro);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return libros;
+    }
+
+    public List<Libro> obtenerLibros(String busqueda) {
+        List<Libro> libros = new ArrayList<>();
+        String sql = "SELECT * FROM libros WHERE titulo LIKE ? OR autor LIKE ? OR editorial LIKE ? OR isbn LIKE ?";
+
+        try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            String busquedaConComodines = "%" + busqueda + "%";
+            pstmt.setString(1, busquedaConComodines);
+            pstmt.setString(2, busquedaConComodines);
+            pstmt.setString(3, busquedaConComodines);
+            pstmt.setString(4, busquedaConComodines);
+
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
                 Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"),

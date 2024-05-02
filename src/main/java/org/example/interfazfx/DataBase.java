@@ -71,7 +71,7 @@ public class DataBase {
     public void insertarLibro(String titulo, String autor, String editorial, String isbn, int cantidad) throws SQLException {
         Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
         if (connection != null) {
-            String query = "INSERT INTO libros (titulo, autor, editorial, isbn, cantidad) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO libros (id,titulo, autor, editorial, isbn, cantidad) VALUES (pk_id_libros_sec.nextval,?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, titulo);
             preparedStatement.setString(2, autor);

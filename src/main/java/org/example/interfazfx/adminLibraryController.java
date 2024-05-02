@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -64,7 +65,16 @@ public class adminLibraryController {
     private ListView<Libro> listaLibros;
 
     @FXML
+    private TextField buscador;
+
+    @FXML
     protected void initialize() {
+
+        buscador.textProperty().addListener((observable, oldValue, newValue) -> {
+            List<Libro> librosBuscados = obtenerLibros(newValue);
+            librosBuscados.sort(Comparator.comparing(Libro::getTitulo));
+            listaLibros.getItems().setAll(librosBuscados);
+        });
 
         listaLibros.setCellFactory(param -> new ListCell<Libro>() {
             @Override
@@ -262,4 +272,34 @@ public class adminLibraryController {
         return libros;
     }
 
+    public List<Libro> obtenerLibros(String busqueda) {
+        List<Libro> libros = new ArrayList<>();
+        String sql = "SELECT * FROM libros WHERE titulo LIKE ? OR autor LIKE ? OR editorial LIKE ? OR isbn LIKE ?";
+
+        try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            String busquedaConComodines = "%" + busqueda + "%";
+            pstmt.setString(1, busquedaConComodines);
+            pstmt.setString(2, busquedaConComodines);
+            pstmt.setString(3, busquedaConComodines);
+            pstmt.setString(4, busquedaConComodines);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"),
+                        rs.getString("editorial"), rs.getString("isbn"), rs.getInt("cantidad"));
+                libros.add(libro);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return libros;
+    }
+
+    // ...
 }
+
+
