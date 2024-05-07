@@ -152,7 +152,7 @@ public class userProfileController {
                     setGraphic(null);
                 } else {
                     Label tituloLabel = new Label("Título: " + libro.getTitulo());
-                    tituloLabel.setStyle("-fx-font-size: 15px; -fx-text-fill:white;"); // Ajusta el tamaño de la fuente
+                    tituloLabel.setStyle("-fx-font-size: 15px; -fx-text-fill:white;"); 
                     // Haz lo mismo para los demás labels
                     Label autorLabel = new Label("Autor: " + libro.getAutor());
                     autorLabel.setStyle("-fx-font-size: 15px;-fx-text-fill:white;");
@@ -167,16 +167,17 @@ public class userProfileController {
                     vboxDetalles.setAlignment(Pos.CENTER);
 
                     Button devolverButton = new Button("Devolver");
-                    devolverButton.setOnAction(event -> devolverLibro(libro));
-                    devolverButton.setStyle("-fx-background-radius: 15;"); // Añade un radio de borde de 15
+                    devolverButton.setOnAction(null); // Elimina el manejador de eventos anterior
+                    devolverButton.setOnAction(event -> devolverLibro(libro)); // Agrega el nuevo manejador de eventos
+                    devolverButton.setStyle("-fx-background-radius: 15;");
                     VBox vboxBoton = new VBox(devolverButton);
-                    vboxBoton.setAlignment(Pos.CENTER); // Centra el botón en el VBox
+                    vboxBoton.setAlignment(Pos.CENTER); 
 
                     VBox vbox = new VBox(vboxDetalles, vboxBoton);
                     vbox.setAlignment(Pos.CENTER);
-                    vbox.setPadding(new javafx.geometry.Insets(10, 0, 0, 0)); // Añade un espacio de 10 píxeles encima
-                                                                              // de cada elemento
-                    vbox.setSpacing(10); // Añade un espacio de 10 píxeles entre los elementos del VBox
+                    vbox.setPadding(new javafx.geometry.Insets(10, 0, 0, 0)); 
+
+                    vbox.setSpacing(10); 
 
                     VBox vboxWithSeparator;
                     if (getIndex() < getListView().getItems().size() - 1) {
@@ -186,13 +187,13 @@ public class userProfileController {
 
                         // Añade un espacio extra antes del separador
                         Region extraSpace = new Region();
-                        extraSpace.setPrefHeight(15); // Añade un espacio de 10 píxeles
+                        extraSpace.setPrefHeight(15); 
 
                         vboxWithSeparator = new VBox(vbox, extraSpace, separator);
                     } else {
                         // Agrega un espacio al final de la última celda
                         VBox endSpace = new VBox();
-                        endSpace.setPrefHeight(10); // Añade un espacio de 10 píxeles
+                        endSpace.setPrefHeight(10); 
 
                         vboxWithSeparator = new VBox(vbox, endSpace);
                     }
@@ -208,7 +209,7 @@ public class userProfileController {
         clip.setArcWidth(32);
         clip.setArcHeight(32);
 
-        // Asegúrate de que el clip se redimensione con la ListView
+
         listaLibros.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
             clip.setWidth(newValue.getWidth());
             clip.setHeight(newValue.getHeight());
@@ -275,20 +276,21 @@ public class userProfileController {
                 if (rs.next() && rs.getInt(1) > 0) {
                     pstmtUpdateLibro.setInt(1, cantidadDevolver);
                     pstmtUpdateLibro.setString(2, libro.getIsbn());
-                    pstmtUpdateLibro.executeUpdate();
+                    pstmtUpdateLibro.execute();
+
                 } else {
                     pstmtInsertLibro.setString(1, libro.getTitulo());
                     pstmtInsertLibro.setString(2, libro.getAutor());
                     pstmtInsertLibro.setString(3, libro.getEditorial());
                     pstmtInsertLibro.setString(4, libro.getIsbn());
                     pstmtInsertLibro.setInt(5, cantidadDevolver);
-                    pstmtInsertLibro.executeUpdate();
+                    pstmtInsertLibro.execute();
                 }
-    
+
                 pstmtEliminacion.setString(1, App.currentUsername);
                 pstmtEliminacion.setString(2, libro.getIsbn());
     
-                pstmtEliminacion.executeUpdate();
+                pstmtEliminacion.execute();
     
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Devolución exitosa");

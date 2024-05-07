@@ -254,31 +254,43 @@ public class userLibraryController {
                 return;
             }
     
-            String sqlReserva = "INSERT INTO reservas(id, usuario, titulo, autor, editorial, isbn, cantidad) VALUES(pk_id_reservas_sec.nextval,?, ?, ?, ?, ?, ?)";
+            String sqlCheckReserva = "SELECT COUNT(*) FROM reservas WHERE usuario = ? AND isbn = ?";
+            String sqlInsertReserva = "INSERT INTO reservas(id, usuario, titulo, autor, editorial, isbn, cantidad) VALUES(pk_id_reservas_sec.nextval,?, ?, ?, ?, ?, ?)";
+            String sqlUpdateReserva = "UPDATE reservas SET cantidad = cantidad + ? WHERE usuario = ? AND isbn = ?";
             String sqlActualizacion = "UPDATE libros SET cantidad = cantidad - ? WHERE isbn = ?";
             String sqlEliminacion = "DELETE FROM libros WHERE isbn = ? AND cantidad = 0";
     
             try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
-                 PreparedStatement pstmtReserva = conn.prepareStatement(sqlReserva);
+                 PreparedStatement pstmtCheckReserva = conn.prepareStatement(sqlCheckReserva);
+                 PreparedStatement pstmtInsertReserva = conn.prepareStatement(sqlInsertReserva);
+                 PreparedStatement pstmtUpdateReserva = conn.prepareStatement(sqlUpdateReserva);
                  PreparedStatement pstmtActualizacion = conn.prepareStatement(sqlActualizacion);
                  PreparedStatement pstmtEliminacion = conn.prepareStatement(sqlEliminacion)) {
     
-                pstmtReserva.setString(1, App.currentUsername);
-                pstmtReserva.setString(2, libro.getTitulo());
-                pstmtReserva.setString(3, libro.getAutor());
-                pstmtReserva.setString(4, libro.getEditorial());
-                pstmtReserva.setString(5, libro.getIsbn());
-                pstmtReserva.setInt(6, cantidadReservar);
+                pstmtCheckReserva.setString(1, App.currentUsername);
+                pstmtCheckReserva.setString(2, libro.getIsbn());
+                ResultSet rs = pstmtCheckReserva.executeQuery();
     
-                pstmtReserva.executeUpdate();
+                if (rs.next() && rs.getInt(1) > 0) {
+                    pstmtUpdateReserva.setInt(1, cantidadReservar);
+                    pstmtUpdateReserva.setString(2, App.currentUsername);
+                    pstmtUpdateReserva.setString(3, libro.getIsbn());
+                    pstmtUpdateReserva.executeUpdate();
+                } else {
+                    pstmtInsertReserva.setString(1, App.currentUsername);
+                    pstmtInsertReserva.setString(2, libro.getTitulo());
+                    pstmtInsertReserva.setString(3, libro.getAutor());
+                    pstmtInsertReserva.setString(4, libro.getEditorial());
+                    pstmtInsertReserva.setString(5, libro.getIsbn());
+                    pstmtInsertReserva.setInt(6, cantidadReservar);
+                    pstmtInsertReserva.executeUpdate();
+                }
     
                 pstmtActualizacion.setInt(1, cantidadReservar);
                 pstmtActualizacion.setString(2, libro.getIsbn());
-    
                 pstmtActualizacion.executeUpdate();
     
                 pstmtEliminacion.setString(1, libro.getIsbn());
-    
                 pstmtEliminacion.executeUpdate();
     
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

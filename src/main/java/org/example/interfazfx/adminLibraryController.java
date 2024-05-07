@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +12,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -20,6 +22,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -68,7 +72,12 @@ public class adminLibraryController {
     private TextField buscador;
 
     @FXML
+    private ImageView logout;
+
+    @FXML
     protected void initialize() {
+
+        logout.setOnMouseEntered(event -> logout.setCursor(Cursor.HAND));
 
         buscador.textProperty().addListener((observable, oldValue, newValue) -> {
             List<Libro> librosBuscados = obtenerLibros(newValue);
@@ -220,6 +229,17 @@ public class adminLibraryController {
             List<Libro> librosActualizados = obtenerLibros();
             librosActualizados.sort(Comparator.comparing(Libro::getTitulo));
             listaLibros.getItems().setAll(librosActualizados);
+        });
+
+                logout.setOnMouseClicked(event -> {
+
+            AppInitializer appInitializer = new AppInitializer();
+            try {
+                appInitializer.changeScene((Stage) logout.getScene().getWindow(), "loginView.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         });
 
     }
