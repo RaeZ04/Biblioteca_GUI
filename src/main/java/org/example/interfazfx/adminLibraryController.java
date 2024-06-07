@@ -75,9 +75,13 @@ public class adminLibraryController {
     private ImageView logout;
 
     @FXML
+    private ImageView refresh;
+
+    @FXML
     protected void initialize() {
 
         logout.setOnMouseEntered(event -> logout.setCursor(Cursor.HAND));
+        refresh.setOnMouseEntered(event -> refresh.setCursor(Cursor.HAND));
 
         buscador.textProperty().addListener((observable, oldValue, newValue) -> {
             List<Libro> librosBuscados = obtenerLibros(newValue);
@@ -209,29 +213,58 @@ public class adminLibraryController {
             String autor = autorfield.getText();
             String editorial = editorialfield.getText();
             String isbn = isbnfield.getText();
-            int cantidad = Integer.parseInt(cantfield.getText());
-
+            int cantidad;
             try {
-                dataBase.insertarLibro(titulo, autor, editorial, isbn, cantidad);
-            } catch (SQLException e) {
-                // Manejar la excepción
-                e.printStackTrace();
+                cantidad = Integer.parseInt(cantfield.getText());
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error en la cantidad");
+                alert.setHeaderText(null);
+                alert.setContentText("La cantidad debe ser un número entero.");
+                alert.showAndWait();
+                return;
             }
 
-            // Limpiar los campos de texto después de insertar el libro
-            nombrefield.clear();
-            autorfield.clear();
-            editorialfield.clear();
-            isbnfield.clear();
-            cantfield.clear();
+            try {
+                if (libroYaExiste(isbn)) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Libro existente");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Ya existe un libro con el ISBN " + isbn + ". No se puede agregar.");
+                    alert.showAndWait();
+                } else {
+                    dataBase.insertarLibro(titulo, autor, editorial, isbn, cantidad);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Libro añadido");
+                    alert.setHeaderText(null);
+                    alert.setContentText("El libro ha sido añadido con éxito.");
+                    alert.showAndWait();
 
-            // En algún lugar de tu código donde quieras actualizar la lista de libros
-            List<Libro> librosActualizados = obtenerLibros();
-            librosActualizados.sort(Comparator.comparing(Libro::getTitulo));
-            listaLibros.getItems().setAll(librosActualizados);
+                    // Limpiar los campos de texto después de insertar el libro
+                    nombrefield.clear();
+                    autorfield.clear();
+                    editorialfield.clear();
+                    isbnfield.clear();
+                    cantfield.clear();
+
+                    // Actualizar la lista de libros
+                    List<Libro> librosActualizados = obtenerLibros();
+                    librosActualizados.sort(Comparator.comparing(Libro::getTitulo));
+                    listaLibros.getItems().setAll(librosActualizados);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error al añadir libro");
+                alert.setHeaderText(null);
+                alert.setContentText("Ocurrió un error al añadir el libro: " + e.getMessage());
+                alert.showAndWait();
+            }
         });
 
-                logout.setOnMouseClicked(event -> {
+
+
+        logout.setOnMouseClicked(event -> {
 
             AppInitializer appInitializer = new AppInitializer();
             try {
@@ -241,6 +274,18 @@ public class adminLibraryController {
             }
 
         });
+
+        refresh.setOnMouseClicked(event -> {
+
+            nombrefield.clear();
+            autorfield.clear();
+            editorialfield.clear();
+            isbnfield.clear();
+            cantfield.clear();
+
+        }) ;
+
+
 
     }
 
@@ -319,7 +364,21 @@ public class adminLibraryController {
         return libros;
     }
 
-    // ...
+    public boolean libroYaExiste(String isbn) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM libros WHERE isbn = ?";
+        try (Connection conn = DriverManager.getConnection(dataBase.dbURL, dataBase.username, dataBase.password);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, isbn);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Retorna true si hay al menos un libro con ese ISBN
+            }
+        }
+        return false; // Retorna false si no encuentra ningún libro con ese ISBN
+    }
+
+
 }
 
 

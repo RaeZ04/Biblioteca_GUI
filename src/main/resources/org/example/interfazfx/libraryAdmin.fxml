@@ -89,6 +89,11 @@
                         <Font size="21.0" />
                      </font>
                   </Button>
+                  <ImageView fx:id="refresh" fitHeight="35.0" fitWidth="29.0" layoutX="467.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@media/refresh.jpg" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <ListView id="listaLibros" fx:id="listaLibros" layoutX="76.0" layoutY="245.0" prefHeight="423.0" prefWidth="570.0" stylesheets="@libraryStyle.css" />
