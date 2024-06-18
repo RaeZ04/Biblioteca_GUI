@@ -91,8 +91,10 @@ public class userLibraryController {
                     isbnLabel.setStyle("-fx-font-size: 15;-fx-text-fill:white;");
                     Label cantidadLabel = new Label("Cantidad: " + libro.getCantidad());
                     cantidadLabel.setStyle("-fx-font-size: 15px;-fx-text-fill:white;");
-
-                    VBox vboxDetalles = new VBox(tituloLabel, autorLabel, editorialLabel, isbnLabel, cantidadLabel);
+                    Label valoracionMediaLabel = new Label(String.format("Valoración Media: %.2f", libro.getValoracionMedia()));
+                    valoracionMediaLabel.setStyle("-fx-font-size: 15px;-fx-text-fill:white;");
+                    
+                    VBox vboxDetalles = new VBox(tituloLabel, autorLabel, editorialLabel, isbnLabel, cantidadLabel, valoracionMediaLabel);
                     vboxDetalles.setAlignment(Pos.CENTER);
 
                     Button reservarButton = new Button("Reservar");
@@ -313,48 +315,52 @@ public class userLibraryController {
 
     public List<Libro> obtenerLibros() {
         List<Libro> libros = new ArrayList<>();
-        String sql = "SELECT * FROM libros";
-
+        // Modificada para incluir la valoración media
+        String sql = "SELECT l.*, AVG(v.valoracion) as valoracion_media FROM libros l LEFT JOIN valoraciones v ON l.isbn = v.isbn GROUP BY l.id, l.titulo, l.autor, l.editorial, l.isbn, l.cantidad";
+    
         try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
-
+    
             while (rs.next()) {
                 Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"),
                         rs.getString("editorial"), rs.getString("isbn"), rs.getInt("cantidad"));
+                libro.setValoracionMedia(rs.getDouble("valoracion_media")); // Asumiendo que se añade este campo a la clase Libro
                 libros.add(libro);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+    
         return libros;
     }
-
+    
     public List<Libro> obtenerLibros(String busqueda) {
         List<Libro> libros = new ArrayList<>();
-        String sql = "SELECT * FROM libros WHERE titulo LIKE ? OR autor LIKE ? OR editorial LIKE ? OR isbn LIKE ?";
-
+        // Modificada para incluir la valoración media
+        String sql = "SELECT l.*, AVG(v.valoracion) as valoracion_media FROM libros l LEFT JOIN valoraciones v ON l.isbn = v.isbn WHERE l.titulo LIKE ? OR l.autor LIKE ? OR l.editorial LIKE ? OR l.isbn LIKE ? GROUP BY l.id, l.titulo, l.autor, l.editorial, l.isbn, l.cantidad";
+    
         try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+    
             String busquedaConComodines = "%" + busqueda + "%";
             pstmt.setString(1, busquedaConComodines);
             pstmt.setString(2, busquedaConComodines);
             pstmt.setString(3, busquedaConComodines);
             pstmt.setString(4, busquedaConComodines);
-
+    
             ResultSet rs = pstmt.executeQuery();
-
+    
             while (rs.next()) {
                 Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"),
                         rs.getString("editorial"), rs.getString("isbn"), rs.getInt("cantidad"));
+                libro.setValoracionMedia(rs.getDouble("valoracion_media")); // Asumiendo que se añade este campo a la clase Libro
                 libros.add(libro);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+    
         return libros;
     }
 

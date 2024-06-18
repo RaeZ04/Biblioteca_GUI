@@ -230,8 +230,8 @@ public class userProfileController {
         dialog.setTitle("Devolución de libro");
         dialog.setHeaderText("Ingrese la cantidad de libros que desea devolver:");
         Optional<String> result = dialog.showAndWait();
-    
-        if (result.isPresent()){
+
+        if (result.isPresent()) {
             String input = result.get();
             if (input.isEmpty() || input.equals("0")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -241,7 +241,7 @@ public class userProfileController {
                 alert.showAndWait();
                 return;
             }
-    
+
             int cantidadDevolver = Integer.parseInt(input);
             if (cantidadDevolver > libro.getCantidad()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -251,33 +251,32 @@ public class userProfileController {
                 alert.showAndWait();
                 return;
             }
-    
+
             String sqlReserva = "UPDATE reservas SET cantidad = cantidad - ? WHERE usuario = ? AND isbn = ?";
             String sqlCheckLibro = "SELECT COUNT(*) FROM libros WHERE isbn = ?";
             String sqlInsertLibro = "INSERT INTO libros(id,titulo, autor, editorial, isbn, cantidad) VALUES(pk_id_libros_sec.nextval,?, ?, ?, ?, ?)";
             String sqlUpdateLibro = "UPDATE libros SET cantidad = cantidad + ? WHERE isbn = ?";
             String sqlEliminacion = "DELETE FROM reservas WHERE usuario = ? AND isbn = ? AND cantidad = 0";
-    
+
             try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
-                    PreparedStatement pstmtReserva = conn.prepareStatement(sqlReserva);
-                    PreparedStatement pstmtCheckLibro = conn.prepareStatement(sqlCheckLibro);
-                    PreparedStatement pstmtInsertLibro = conn.prepareStatement(sqlInsertLibro);
-                    PreparedStatement pstmtUpdateLibro = conn.prepareStatement(sqlUpdateLibro);
-                    PreparedStatement pstmtEliminacion = conn.prepareStatement(sqlEliminacion)) {
-    
+                 PreparedStatement pstmtReserva = conn.prepareStatement(sqlReserva);
+                 PreparedStatement pstmtCheckLibro = conn.prepareStatement(sqlCheckLibro);
+                 PreparedStatement pstmtInsertLibro = conn.prepareStatement(sqlInsertLibro);
+                 PreparedStatement pstmtUpdateLibro = conn.prepareStatement(sqlUpdateLibro);
+                 PreparedStatement pstmtEliminacion = conn.prepareStatement(sqlEliminacion)) {
+
                 pstmtReserva.setInt(1, cantidadDevolver);
                 pstmtReserva.setString(2, App.currentUsername);
                 pstmtReserva.setString(3, libro.getIsbn());
-    
+
                 pstmtReserva.executeUpdate();
-    
+
                 pstmtCheckLibro.setString(1, libro.getIsbn());
                 ResultSet rs = pstmtCheckLibro.executeQuery();
                 if (rs.next() && rs.getInt(1) > 0) {
                     pstmtUpdateLibro.setInt(1, cantidadDevolver);
                     pstmtUpdateLibro.setString(2, libro.getIsbn());
                     pstmtUpdateLibro.execute();
-
                 } else {
                     pstmtInsertLibro.setString(1, libro.getTitulo());
                     pstmtInsertLibro.setString(2, libro.getAutor());
@@ -289,26 +288,62 @@ public class userProfileController {
 
                 pstmtEliminacion.setString(1, App.currentUsername);
                 pstmtEliminacion.setString(2, libro.getIsbn());
-    
+
                 pstmtEliminacion.execute();
-    
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Devolución exitosa");
                 alert.setHeaderText(null);
                 alert.setContentText("Se ha devuelto el libro correctamente.");
                 alert.showAndWait();
-    
+
+                // Solicitar valoración del libro
+                TextInputDialog valoracionDialog = new TextInputDialog();
+                valoracionDialog.setTitle("Valoración del libro");
+                valoracionDialog.setHeaderText("Por favor, valora el libro del 1 al 5:");
+                Optional<String> valoracionResult = valoracionDialog.showAndWait();
+
+                valoracionResult.ifPresent(valoracion -> {
+                    try {
+                        int valoracionInt = Integer.parseInt(valoracion);
+                        if (valoracionInt >= 1 && valoracionInt <= 5) {
+                            String sqlInsertValoracion = "INSERT INTO valoraciones (isbn, valoracion) VALUES (?, ?)";
+                            try (PreparedStatement pstmtValoracion = conn.prepareStatement(sqlInsertValoracion)) {
+                                pstmtValoracion.setString(1, libro.getIsbn());
+                                pstmtValoracion.setInt(2, valoracionInt);
+                                pstmtValoracion.executeUpdate();
+                            } catch (SQLException e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } else {
+                            Alert valoracionAlert = new Alert(Alert.AlertType.ERROR);
+                            valoracionAlert.setTitle("Error de valoración");
+                            valoracionAlert.setHeaderText(null);
+                            valoracionAlert.setContentText("La valoración debe ser un número entre 1 y 5.");
+                            valoracionAlert.showAndWait();
+                        }
+                    } catch (NumberFormatException e) {
+                        Alert valoracionAlert = new Alert(Alert.AlertType.ERROR);
+                        valoracionAlert.setTitle("Error de valoración");
+                        valoracionAlert.setHeaderText(null);
+                        valoracionAlert.setContentText("Debes ingresar un número.");
+                        valoracionAlert.showAndWait();
+                    }
+                });
+
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
         }
-    
+
         List<Libro> libros = obtenerLibros();
         libros.sort(Comparator.comparing(Libro::getTitulo));
         listaLibros.setFocusTraversable(false);
-    
+
         listaLibros.getItems().setAll(libros);
     }
+
+
 
     public List<Libro> obtenerLibros() {
         List<Libro> libros = new ArrayList<>();

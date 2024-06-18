@@ -23,6 +23,8 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,6 +35,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class adminLibraryController {
 
@@ -78,10 +85,18 @@ public class adminLibraryController {
     private ImageView refresh;
 
     @FXML
+    private Label listausers;
+
+    @FXML
+    private ImageView exportar;
+
+    @FXML
     protected void initialize() {
 
         logout.setOnMouseEntered(event -> logout.setCursor(Cursor.HAND));
         refresh.setOnMouseEntered(event -> refresh.setCursor(Cursor.HAND));
+        listausers.setOnMouseEntered(event -> listausers.setCursor(Cursor.HAND));
+        exportar.setOnMouseEntered(event -> exportar.setCursor(Cursor.HAND));
 
         buscador.textProperty().addListener((observable, oldValue, newValue) -> {
             List<Libro> librosBuscados = obtenerLibros(newValue);
@@ -93,14 +108,13 @@ public class adminLibraryController {
             @Override
             protected void updateItem(Libro libro, boolean empty) {
                 super.updateItem(libro, empty);
-        
+
                 if (empty || libro == null) {
                     setText(null);
                     setGraphic(null);
                 } else {
                     Label tituloLabel = new Label("Título: " + libro.getTitulo());
-                    tituloLabel.setStyle("-fx-font-size: 15px; -fx-text-fill:white;"); // Ajusta el tamaño de la fuente
-                    // Haz lo mismo para los demás labels
+                    tituloLabel.setStyle("-fx-font-size: 15px; -fx-text-fill:white;");
                     Label autorLabel = new Label("Autor: " + libro.getAutor());
                     autorLabel.setStyle("-fx-font-size: 15px;-fx-text-fill:white;");
                     Label editorialLabel = new Label("Editorial: " + libro.getEditorial());
@@ -109,40 +123,40 @@ public class adminLibraryController {
                     isbnLabel.setStyle("-fx-font-size: 15;-fx-text-fill:white;");
                     Label cantidadLabel = new Label("Cantidad: " + libro.getCantidad());
                     cantidadLabel.setStyle("-fx-font-size: 15px;-fx-text-fill:white;");
-        
-                    VBox vboxDetalles = new VBox(tituloLabel, autorLabel, editorialLabel, isbnLabel, cantidadLabel);
+                    // Nuevo label para la valoración media
+                    Label valoracionMediaLabel = new Label(String.format("Valoración Media: %.2f", libro.getValoracionMedia()));
+                    valoracionMediaLabel.setStyle("-fx-font-size: 15px;-fx-text-fill:white;");
+
+                    VBox vboxDetalles = new VBox(tituloLabel, autorLabel, editorialLabel, isbnLabel, cantidadLabel, valoracionMediaLabel);
                     vboxDetalles.setAlignment(Pos.CENTER);
-        
+
                     Button reservarButton = new Button("Eliminar");
                     reservarButton.setOnAction(event -> Eliminar(libro));
-                    reservarButton.setStyle("-fx-background-radius: 15;"); // Añade un radio de borde de 15
+                    reservarButton.setStyle("-fx-background-radius: 15;");
                     VBox vboxBoton = new VBox(reservarButton);
-                    vboxBoton.setAlignment(Pos.CENTER); // Centra el botón en el VBox
-        
+                    vboxBoton.setAlignment(Pos.CENTER);
+
                     VBox vbox = new VBox(vboxDetalles, vboxBoton);
                     vbox.setAlignment(Pos.CENTER);
-                    vbox.setPadding(new Insets(10, 0, 0, 0)); // Añade un espacio de 10 píxeles encima de cada elemento
-                    vbox.setSpacing(10); // Añade un espacio de 10 píxeles entre los elementos del VBox
-        
+                    vbox.setPadding(new Insets(10, 0, 0, 0));
+                    vbox.setSpacing(10);
+
                     VBox vboxWithSeparator;
                     if (getIndex() < getListView().getItems().size() - 1) {
-                        // Añade un separador
                         Separator separator = new Separator();
                         separator.setStyle("-fx-background-color: white; -fx-opacity: 0.5;");
-        
-                        // Añade un espacio extra antes del separador
+
                         Region extraSpace = new Region();
-                        extraSpace.setPrefHeight(15); // Añade un espacio de 10 píxeles
-        
+                        extraSpace.setPrefHeight(15);
+
                         vboxWithSeparator = new VBox(vbox, extraSpace, separator);
                     } else {
-                        // Agrega un espacio al final de la última celda
                         VBox endSpace = new VBox();
-                        endSpace.setPrefHeight(10); // Añade un espacio de 10 píxeles
-        
+                        endSpace.setPrefHeight(10);
+
                         vboxWithSeparator = new VBox(vbox, endSpace);
                     }
-        
+
                     setText(null);
                     setGraphic(vboxWithSeparator);
                 }
@@ -285,7 +299,18 @@ public class adminLibraryController {
 
         }) ;
 
+        listausers.setOnMouseClicked(event -> {
 
+            AppInitializer appInitializer = new AppInitializer();
+            try {
+                appInitializer.changeScene((Stage) listausers.getScene().getWindow(), "vistaAdmin2.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        exportar.setOnMouseClicked(event -> exportarLibros());
 
     }
 
@@ -319,48 +344,52 @@ public class adminLibraryController {
 
     public List<Libro> obtenerLibros() {
         List<Libro> libros = new ArrayList<>();
-        String sql = "SELECT * FROM libros";
-
+        // Modificada para incluir la valoración media
+        String sql = "SELECT l.*, AVG(v.valoracion) as valoracion_media FROM libros l LEFT JOIN valoraciones v ON l.isbn = v.isbn GROUP BY l.id, l.titulo, l.autor, l.editorial, l.isbn, l.cantidad";
+    
         try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
-
+    
             while (rs.next()) {
                 Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"),
                         rs.getString("editorial"), rs.getString("isbn"), rs.getInt("cantidad"));
+                libro.setValoracionMedia(rs.getDouble("valoracion_media")); // Asumiendo que se añade este campo a la clase Libro
                 libros.add(libro);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+    
         return libros;
     }
-
+    
     public List<Libro> obtenerLibros(String busqueda) {
         List<Libro> libros = new ArrayList<>();
-        String sql = "SELECT * FROM libros WHERE titulo LIKE ? OR autor LIKE ? OR editorial LIKE ? OR isbn LIKE ?";
-
+        // Modificada para incluir la valoración media
+        String sql = "SELECT l.*, AVG(v.valoracion) as valoracion_media FROM libros l LEFT JOIN valoraciones v ON l.isbn = v.isbn WHERE l.titulo LIKE ? OR l.autor LIKE ? OR l.editorial LIKE ? OR l.isbn LIKE ? GROUP BY l.id, l.titulo, l.autor, l.editorial, l.isbn, l.cantidad";
+    
         try (Connection conn = DriverManager.getConnection(DataBase.dbURL, DataBase.username, DataBase.password);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+    
             String busquedaConComodines = "%" + busqueda + "%";
             pstmt.setString(1, busquedaConComodines);
             pstmt.setString(2, busquedaConComodines);
             pstmt.setString(3, busquedaConComodines);
             pstmt.setString(4, busquedaConComodines);
-
+    
             ResultSet rs = pstmt.executeQuery();
-
+    
             while (rs.next()) {
                 Libro libro = new Libro(rs.getInt("id"), rs.getString("titulo"), rs.getString("autor"),
                         rs.getString("editorial"), rs.getString("isbn"), rs.getInt("cantidad"));
+                libro.setValoracionMedia(rs.getDouble("valoracion_media")); // Asumiendo que se añade este campo a la clase Libro
                 libros.add(libro);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+    
         return libros;
     }
 
@@ -377,6 +406,60 @@ public class adminLibraryController {
         }
         return false; // Retorna false si no encuentra ningún libro con ese ISBN
     }
+
+        public void exportarLibros() {
+    List<Libro> libros = obtenerLibros(); // Asume que este método devuelve todos los libros
+    String path = "libros_exportados.xlsx"; // Define el nombre y ruta del archivo de exportación
+
+    try (Workbook workbook = new XSSFWorkbook()) {
+        Sheet sheet = workbook.createSheet("Libros");
+
+        // Escribe la cabecera del CSV
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("ID");
+        headerRow.createCell(1).setCellValue("Titulo");
+        headerRow.createCell(2).setCellValue("Autor");
+        headerRow.createCell(3).setCellValue("Editorial");
+        headerRow.createCell(4).setCellValue("ISBN");
+        headerRow.createCell(5).setCellValue("Cantidad");
+
+        // Escribe los datos de cada libro
+        int rowNum = 1;
+        for (Libro libro : libros) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(libro.getId());
+            row.createCell(1).setCellValue(libro.getTitulo());
+            row.createCell(2).setCellValue(libro.getAutor());
+            row.createCell(3).setCellValue(libro.getEditorial());
+            row.createCell(4).setCellValue(libro.getIsbn());
+            row.createCell(5).setCellValue(libro.getCantidad());
+        }
+
+        // Ajustar el tamaño de las columnas
+        for (int i = 0; i < 6; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        // Escribir el libro de trabajo a un archivo
+        try (FileOutputStream fileOut = new FileOutputStream(path)) {
+            workbook.write(fileOut);
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Exportación exitosa");
+        alert.setHeaderText(null);
+        alert.setContentText("Libros exportados exitosamente.");
+        alert.showAndWait();
+
+    } catch (IOException e) {
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error al exportar libros");
+        alert.setHeaderText(null);
+        alert.setContentText("Ocurrió un error al exportar los libros.");
+        alert.showAndWait();
+    }
+}
 
 
 }

@@ -7,6 +7,7 @@ public class Libro {
     private String editorial;
     private String isbn;
     private int cantidad;
+    private double valoracionMedia;
 
     public Libro(int id, String titulo, String autor, String editorial, String isbn, int cantidad) {
         this.id = id;
@@ -74,5 +75,12 @@ public class Libro {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+    public double getValoracionMedia() {
+        return valoracionMedia;
+    }
+
+    public void setValoracionMedia(double valoracionMedia) {
+        this.valoracionMedia = valoracionMedia;
     }
 }

@@ -3,6 +3,8 @@ package org.example.interfazfx;
 import javafx.scene.control.TextField;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBase {
 
@@ -25,7 +27,7 @@ public class DataBase {
         Connection connection = DriverManager.getConnection(dbURL, this.username, this.password);
 
         if (connection != null) {
-            String query = "INSERT INTO usuarios (nombre, contraseña, correo) VALUES (?, ?, ? || '@edu.uah.es')";
+            String query = "INSERT INTO usuarios (id, nombre, contraseña, correo) VALUES (pk_id_usuarios_sec.nextval, ?, ?, ? || '@edu.uah.es')";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, usernameField.getText());
             preparedStatement.setString(2, passField.getText());
@@ -92,6 +94,54 @@ public class DataBase {
             preparedStatement.executeUpdate();
             connection.close();
         }
+    }
+
+
+    public static class Usuario {
+        private String nombre;
+        private String correo;
+
+        public Usuario(String nombre, String correo) {
+            this.nombre = nombre;
+            this.correo = correo;
+        }
+
+        public String getNombre() {
+            return nombre;
+        }
+
+        public void setNombre(String nombre) {
+            this.nombre = nombre;
+        }
+
+        public String getCorreo() {
+            return correo;
+        }
+
+        public void setCorreo(String correo) {
+            this.correo = correo;
+        }
+    }
+
+    
+    public List<Usuario> obtenerUsuarios() throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT nombre, correo FROM usuarios";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, username, password);
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario(rs.getString("nombre"), rs.getString("correo"));
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
+
+        return usuarios;
     }
 
 

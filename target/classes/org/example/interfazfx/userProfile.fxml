@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox id="base" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@registerStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.interfazfx.userProfileController">
+   <children>
+      <AnchorPane id="base" prefHeight="720.0" prefWidth="1304.0" stylesheets="@libraryStyle.css">
+         <children>
+            <AnchorPane id="header" prefHeight="200.0" prefWidth="1280.0" stylesheets="@libraryStyle.css">
+               <children>
+                  <ImageView fitHeight="105.0" fitWidth="117.0" layoutX="52.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@media/loginicon.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="usernameLabel" alignment="CENTER" layoutX="3.0" layoutY="146.0" prefHeight="27.0" prefWidth="208.0" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textbox" fx:id="buscador" layoutX="446.0" layoutY="74.0" prefHeight="26.0" prefWidth="597.0" stylesheets="@libraryStyle.css" />
+                  <ImageView fx:id="lupa" fitHeight="68.0" fitWidth="67.0" layoutX="985.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@media/1200px-VisualEditor_-_Icon_-_Search-big_-_white.svg.png" />
+                     </image>
+                  </ImageView>
+                              <Button id="minimize" fx:id="minimizeButton" alignment="TOP_CENTER" layoutX="1179.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" stylesheets="@registerStyle.css" text="−" textFill="#e3dfea">
+                                  <font>
+                                      <Font name="System Bold" size="18.0" />
+                                  </font>
+                              </Button>
+                                       <Button id="close" fx:id="exitButton" layoutX="1230.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" stylesheets="@libraryStyle.css" text="✕" textFill="#e3dfea">
+                                  <font>
+                                      <Font size="18.0" />
+                                  </font>
+                              </Button>
+                  <Label fx:id="inicio" alignment="CENTER" layoutX="291.0" layoutY="69.0" minHeight="-Infinity" prefWidth="150.0" text="Inicio" textFill="WHITE">
+                     <font>
+                        <Font name="Peddana Regular" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <ImageView fx:id="logout" fitHeight="39.0" fitWidth="50.0" layoutX="9.0" layoutY="673.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@media/logout.png" />
+               </image>
+            </ImageView>
+            <ListView id="listaLibros" fx:id="listaLibros" layoutX="108.0" layoutY="245.0" prefHeight="423.0" prefWidth="1059.0" stylesheets="@libraryStyle.css" />
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>

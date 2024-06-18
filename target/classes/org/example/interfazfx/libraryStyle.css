@@ -1,0 +1,100 @@
+#header{
+    -fx-background-color: #202025;
+    -fx-background-radius: 10 10 0 0;
+}
+
+#base{
+    -fx-background-radius: 10;
+}
+
+#formulario{
+    -fx-background-color: #202025;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#textbox{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #ffffff transparent;
+    -fx-border-width: 0 0 1 0;
+    
+}
+
+#headerButton{
+    -fx-background-color: linear-gradient(to right, #3ba9e6, #0c2092);
+    -fx-text-fill: white;
+    -fx-border-radius: 7;
+    -fx-background-radius: 15;
+}
+
+#headerButton:hover{
+    -fx-background-color: linear-gradient(to right, #3ba9e6, #2943d8);
+    -fx-text-fill: white;
+}
+
+#scrollpanebg .viewport{
+    -fx-background-color: #202025;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#scrollpanebg{
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#close{
+    -fx-background-color: rgba(32,32,37,255);
+    -fx-background-radius: 0 9 0 0;
+}
+
+#close:hover {
+    -fx-background-color: #dc4c4c;
+}
+
+#minimize{
+    -fx-background-color: rgba(32,32,37,255);
+}
+
+#minimize:hover {
+    -fx-background-color: rgb(56, 56, 63);
+}
+
+#listaLibros{
+    -fx-background-color: #202025;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#listaLibros .list-cell {
+    -fx-background-color: #202025;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+}
+
+#listaLibros .scroll-bar {
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+
+#listaLibros .scroll-bar .increment-arrow,
+#listaLibros .scroll-bar .decrement-arrow,
+#listaLibros .scroll-bar .increment-button,
+#listaLibros .scroll-bar .decrement-button {
+    -fx-max-height: 0;
+    -fx-max-width: 0;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
+    -fx-min-height: 0;
+    -fx-min-width: 0;
+}
+
+
+.text-field {
+    -fx-text-fill: white;
+}
+
+.text-field:focused {
+    -fx-focus-color: white;
+}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox id="base" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="936.0" prefWidth="1575.0" style="-fx-background-radius: 15;" stylesheets="@dbErrorStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.interfazfx.ErrordbController">
+    <children>
+        <AnchorPane id="midlow" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="944.0" prefWidth="1577.0" stylesheets="@dbErrorStyle.css">
+            <children>
+                <AnchorPane id="top" layoutX="-1.0" layoutY="-1.0" prefHeight="235.0" prefWidth="1577.0" stylesheets="@dbErrorStyle.css">
+                    <children>
+                        <ImageView fitHeight="192.0" fitWidth="635.0" layoutX="519.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@media/Universidad_de_Alcalá_(2021)_logotipo.png" />
+                            </image>
+                        </ImageView>
+                        <Button id="close" fx:id="exitButton" layoutX="1515.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="60.0" stylesheets="@dbErrorStyle.css" text="✕" textFill="WHITE">
+                            <font>
+                                <Font size="21.0" />
+                            </font>
+                        </Button>
+                        <Button id="minimize" fx:id="minimizeButton" alignment="TOP_CENTER" layoutX="1454.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="60.0" stylesheets="@dbErrorStyle.css" text="−" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="21.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </AnchorPane>
+                <AnchorPane id="mid" layoutX="179.0" layoutY="396.0" prefHeight="261.0" prefWidth="1205.0" stylesheets="@dbErrorStyle.css">
+                    <children>
+                        <Label layoutX="265.0" layoutY="111.0" text="Ha habido un error al iniciar la aplicacion, intentelo de nuevo." textFill="#d3d3d3">
+                            <font>
+                                <Font size="28.0" />
+                            </font>
+                        </Label>
+                        <ImageView fitHeight="94.0" fitWidth="120.0" layoutX="146.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@media/erroricon.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </children>
+</HBox>
