@@ -1,5 +1,8 @@
 # BIBLIOTECA UAH
 
+> [!IMPORTANT]
+> ACTUALMENTE LA BASE DE DATOS ESTA INACTIVA, POR LO QUE SE DEBERÁ ESPERAR QUE NO FUNCIONE!
+
 Es una aplicacion que sirve como biblioteca para la Universidad de Alcala de Henares, esta permite administrar grandes cantidades de libros, asi como la funcion de que haya usuarios que puedan reservar y devolver los mismos. 
 Todo esto conectado a una base de datos que se guarda.
 
